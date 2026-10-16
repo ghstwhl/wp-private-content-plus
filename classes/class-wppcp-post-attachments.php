@@ -262,10 +262,26 @@ class WPPCP_Post_Attachments{
         $upload_dir = wp_upload_dir();
         $file_dir = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_link);
 
-        // Guard the filesystem path before it reaches filesize()/readfile().
-        // $file_dir === $file_link means the URL was not under the uploads baseurl,
-        // so str_replace() was a no-op and we would be reading a URL, not a path.
-        if( $file_dir === '' || $file_dir === $file_link || ! is_file($file_dir) || ! is_readable($file_dir) ){
+        if( $file_dir === '' || $file_dir === $file_link ){
+            return;
+        }
+
+        // Resolve the path and confirm it really lands inside the uploads
+        // directory: wp_get_attachment_url() pastes the raw _wp_attached_file
+        // meta onto the base URL, so a value containing ../ would otherwise walk
+        // out of uploads and read any file the web user can reach.
+        $real_file = realpath($file_dir);
+        $real_base = realpath($upload_dir['basedir']);
+
+        if( $real_file === false || $real_base === false ){
+            return;
+        }
+
+        if( strpos($real_file, $real_base . DIRECTORY_SEPARATOR) !== 0 ){
+            return;
+        }
+
+        if( ! is_file($real_file) || ! is_readable($real_file) ){
             return;
         }
 
@@ -301,11 +317,11 @@ class WPPCP_Post_Attachments{
 
             header('Cache-Control: public');
             header('Content-Description: File Transfer');
-            header('Content-disposition: attachment;filename="'.basename($file_dir).'"');
+            header('Content-disposition: attachment;filename="'.basename($real_file).'"');
             header('Content-Type: '. $file_mime_type);
             header('Content-Transfer-Encoding: binary');
-            header('Content-Length: '. filesize($file_dir));
-            readfile($file_dir);
+            header('Content-Length: '. filesize($real_file));
+            readfile($real_file);
             exit;
         }
     }
