@@ -1,0 +1,1997 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Private Content Plus\n"
+"POT-Creation-Date: 2021-02-17 08:21+0530\n"
+"PO-Revision-Date: 2021-02-17 08:21+0530\n"
+"Last-Translator: \n"
+"Language-Team: WPExpertDeveloper <innovativephp@gmail.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.3\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/templates/admin-menu-settings.php:50
+msgid ""
+"Click on the menu items to assign permissions. This feature only allows you "
+"to restrict backend \n"
+"      features to users based on the existing permissions. You can't use it "
+"to assign features to users."
+msgstr ""
+
+#: admin/templates/admin-menu-visibility.php:11
+#: admin/templates/global-page-restriction-settings.php:29
+#: admin/templates/global-post-restriction-settings.php:29
+#: classes/class-wppcp-menu.php:53 classes/class-wppcp-widgets.php:27
+#: templates/post-page-restriction-meta.php:61
+#: templates/woo-tabs-restriction-meta.php:25
+msgid "Visibility"
+msgstr ""
+
+#: admin/templates/admin-menu-visibility.php:14
+msgid "Default Permissions"
+msgstr ""
+
+#: admin/templates/admin-menu-visibility.php:15 classes/class-wppcp-menu.php:63
+#: classes/class-wppcp-widgets.php:32
+msgid "By User Role"
+msgstr ""
+
+#: admin/templates/admin-menu-visibility.php:20
+msgid "User Roles"
+msgstr ""
+
+#: admin/templates/admin-menu-visibility.php:39
+#: templates/private-user-page.php:84
+msgid "Save"
+msgstr ""
+
+#: admin/templates/general-settings.php:38
+msgid "License Details"
+msgstr ""
+
+#: admin/templates/general-settings.php:44
+msgid "License Key"
+msgstr ""
+
+#: admin/templates/general-settings.php:47
+msgid ""
+"You are using <strong>WP Private Content Plus</strong>. No license key is "
+"required."
+msgstr ""
+
+#: admin/templates/general-settings.php:48
+msgid "To unlock PRO features, pro updates and priority support, consider."
+msgstr ""
+
+#: admin/templates/general-settings.php:49
+msgid "Upgrading to PRO License"
+msgstr ""
+
+#: admin/templates/general-settings.php:56 classes/class-wppcp-settings.php:214
+#: classes/class-wppcp-settings.php:271
+msgid "General Settings"
+msgstr ""
+
+#: admin/templates/general-settings.php:62
+msgid "Enable Private Content Module"
+msgstr ""
+
+#: admin/templates/general-settings.php:65
+msgid ""
+"This setting is used to enable/disable features of this plugin. Once its "
+"disabled, all the restrictions and \n"
+"                    shortcodes applied from this plugin will be disabled."
+msgstr ""
+
+#: admin/templates/general-settings.php:73
+msgid "Post/Page Restriction Redirect URL"
+msgstr ""
+
+#: admin/templates/general-settings.php:76
+msgid ""
+"This setting is used to specify the redirect URL for restrictions setup in "
+"posts/pages/custom post types meta box."
+msgstr ""
+
+#: admin/templates/general-settings.php:83
+msgid "Enable Search Restrictions Module"
+msgstr ""
+
+#: admin/templates/general-settings.php:86
+msgid ""
+"This setting is used to enable/disable search restriction settings of this "
+"plugin. Once its disabled, all the search restrictions and \n"
+"                    shortcodes applied from this plugin will be disabled."
+msgstr ""
+
+#: admin/templates/general-settings.php:93
+msgid "Enable Dasboard Restriction Stats"
+msgstr ""
+
+#: admin/templates/general-settings.php:96
+msgid ""
+"This setting is used to enable/disable restriction stats widget on dashboard."
+msgstr ""
+
+#: admin/templates/general-settings.php:102
+msgid "Enable Author Post/Page Restrictions"
+msgstr ""
+
+#: admin/templates/general-settings.php:105
+msgid ""
+"This setting is used to enable/disable restrictions for post/page authors."
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:19
+msgid "Enable Global Page Restrictions"
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:22
+msgid ""
+"This setting is used to enable/disable restrictions globally on all pages by "
+"default."
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:32
+#: admin/templates/global-post-restriction-settings.php:32
+#: admin/templates/upme-member-list.php:19
+#: admin/templates/upme-member-profile.php:19
+#: admin/templates/upme-search.php:19 classes/class-wppcp-menu.php:60
+#: classes/class-wppcp-widgets.php:29 templates/manage-file-attachments.php:81
+#: templates/manage-file-attachments.php:91
+#: templates/manage-file-attachments.php:135
+#: templates/manage-file-attachments.php:145
+#: templates/post-page-restriction-meta.php:65
+#: templates/woo-tabs-restriction-meta.php:29
+msgid "Everyone"
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:33
+#: admin/templates/global-post-restriction-settings.php:33
+#: admin/templates/upme-member-list.php:20
+#: admin/templates/upme-member-profile.php:20
+#: admin/templates/upme-search.php:20 classes/class-wppcp-menu.php:62
+#: classes/class-wppcp-widgets.php:31 templates/manage-file-attachments.php:82
+#: templates/manage-file-attachments.php:92
+#: templates/manage-file-attachments.php:136
+#: templates/manage-file-attachments.php:146
+#: templates/post-page-restriction-meta.php:66
+#: templates/woo-tabs-restriction-meta.php:30
+msgid "Guests"
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:34
+#: admin/templates/global-post-restriction-settings.php:34
+#: admin/templates/upme-member-list.php:21
+#: admin/templates/upme-member-profile.php:21
+#: admin/templates/upme-search.php:21 classes/class-wppcp-menu.php:61
+#: classes/class-wppcp-widgets.php:30 templates/manage-file-attachments.php:83
+#: templates/manage-file-attachments.php:93
+#: templates/manage-file-attachments.php:137
+#: templates/manage-file-attachments.php:147
+#: templates/post-page-restriction-meta.php:67
+#: templates/woo-tabs-restriction-meta.php:31
+msgid "Members"
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:35
+#: admin/templates/global-post-restriction-settings.php:35
+#: admin/templates/upme-member-list.php:22
+#: admin/templates/upme-member-profile.php:22
+#: admin/templates/upme-search.php:22
+#: templates/post-page-restriction-meta.php:68
+#: templates/woo-tabs-restriction-meta.php:32
+msgid "Selected User Roles"
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:38
+msgid ""
+"This setting is used to specify users allowed to view all pages by default."
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:50
+#: admin/templates/global-post-restriction-settings.php:50
+#: admin/templates/upme-member-list.php:37
+#: admin/templates/upme-member-profile.php:37
+#: admin/templates/upme-search.php:37
+#: templates/post-page-restriction-meta.php:77
+#: templates/woo-tabs-restriction-meta.php:40
+msgid "Allowed User Roles"
+msgstr ""
+
+#: admin/templates/global-page-restriction-settings.php:65
+msgid ""
+"This setting is used to specify the user roles allowed to view all pages by "
+"default."
+msgstr ""
+
+#: admin/templates/global-post-restriction-settings.php:19
+msgid "Enable Global Post Restrictions"
+msgstr ""
+
+#: admin/templates/global-post-restriction-settings.php:22
+msgid ""
+"This setting is used to enable/disable restrictions globally on all posts by "
+"default."
+msgstr ""
+
+#: admin/templates/global-post-restriction-settings.php:38
+msgid ""
+"This setting is used to specify users allowed to view all posts by default."
+msgstr ""
+
+#: admin/templates/global-post-restriction-settings.php:65
+msgid ""
+"This setting is used to specify the user roles allowed to view all posts by "
+"default."
+msgstr ""
+
+#: admin/templates/information-settings.php:32
+msgid "Display PRO Information for Post Restrictions"
+msgstr ""
+
+#: admin/templates/information-settings.php:35
+msgid ""
+"This setting is used to enable/disable PRO feature highlights on Post "
+"Restrictions meta box. By default, this is enabled \n"
+"                        and feature highlightes will be displayed. "
+"Unchecking this option will remove the feature highlightes."
+msgstr ""
+
+#: admin/templates/information-settings.php:41
+msgid "Display PRO Information for Post Attachments"
+msgstr ""
+
+#: admin/templates/information-settings.php:44
+msgid ""
+"This setting is used to enable/disable PRO feature highlights on Manage File "
+"Attachments meta box on post/page screen. By default, this is enabled \n"
+"                        and feature highlightes will be displayed. "
+"Unchecking this option will remove the feature highlightes."
+msgstr ""
+
+#: admin/templates/information-settings.php:50
+msgid "Display PRO Information for Search Settings/ Restrictions"
+msgstr ""
+
+#: admin/templates/information-settings.php:53
+msgid ""
+"This setting is used to enable/disable PRO feature highlights on Search "
+"Settings section. By default, this is enabled \n"
+"                        and feature highlightes will be displayed. "
+"Unchecking this option will remove the feature highlightes."
+msgstr ""
+
+#: admin/templates/information-settings.php:59
+msgid "Display PRO Information for Private User Page"
+msgstr ""
+
+#: admin/templates/information-settings.php:62
+msgid ""
+"This setting is used to enable/disable PRO feature highlights on Private "
+"User Page screen. By default, this is enabled \n"
+"                        and feature highlightes will be displayed. "
+"Unchecking this option will remove the feature highlightes."
+msgstr ""
+
+#: admin/templates/mailchimp-general-settings.php:4
+msgid "Enable Mailchimp Module"
+msgstr ""
+
+#: admin/templates/mailchimp-general-settings.php:7
+msgid "This setting is used to enable/disable features of Mailchimp module."
+msgstr ""
+
+#: admin/templates/mailchimp-general-settings.php:13
+msgid "Mailchimp API Key"
+msgstr ""
+
+#: admin/templates/mailchimp-general-settings.php:16
+msgid "This setting is used to specify the API key for Mailchimp."
+msgstr ""
+
+#: admin/templates/password-global-settings.php:15
+msgid "Global Password Protection Status"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:17
+#: admin/templates/private-page-bulk-content.php:29
+#: admin/templates/search-general-settings.php:30
+#: admin/templates/search-general-settings.php:46
+#: admin/templates/search-restrictions.php:34
+#: admin/templates/search-restrictions.php:50
+#: admin/templates/search-restrictions.php:66
+#: admin/templates/security-ip-settings.php:13
+#: admin/templates/site-lockdown-settings.php:13
+#: admin/templates/site-lockdown-settings.php:27
+#: admin/templates/site-lockdown-settings.php:43
+#: admin/templates/upme-general.php:31
+#: templates/post-page-restriction-meta.php:99
+#: templates/private-user-page.php:35
+msgid "Select"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:18
+#: admin/templates/security-ip-settings.php:15
+#: admin/templates/site-lockdown-settings.php:15
+#: admin/templates/upme-general.php:32
+msgid "Disabled"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:19
+msgid "Enabled for All Users"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:20
+msgid "Enabled for Guest Users"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:23
+msgid ""
+"This setting is used to enabled/disbale global password protection on your "
+"site."
+msgstr ""
+
+#: admin/templates/password-global-settings.php:29
+msgid "Global Protection Password"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:33
+msgid ""
+"This setting is used to specify global protection password of your site."
+msgstr ""
+
+#: admin/templates/password-global-settings.php:39
+msgid "Password Form Title"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:43
+msgid ""
+"This setting is used to define the title of Password Entering form for users."
+msgstr ""
+
+#: admin/templates/password-global-settings.php:49
+msgid "Password Form Message"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:53
+msgid ""
+"This setting is used to define the message of Password Entering form for "
+"users."
+msgstr ""
+
+#: admin/templates/password-global-settings.php:59
+msgid "Allowed URLs"
+msgstr ""
+
+#: admin/templates/password-global-settings.php:63
+msgid ""
+"This setting is used to skip certain URL's from password protection and "
+"allow for anyone."
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:13
+msgid "Type"
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:16
+#: templates/post-page-restriction-meta.php:64
+#: templates/woo-tabs-restriction-meta.php:28
+msgid "Please Select"
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:17
+#: templates/post-page-restriction-meta.php:69
+msgid "Selected Users"
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:22
+msgid ""
+"This setting is used to specify the users type adding same content for the "
+"private user page."
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:27
+msgid "Select Users"
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:33
+msgid ""
+"This setting is used to specify the users for adding same content for the "
+"private user page."
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:38
+msgid "Private Page Content"
+msgstr ""
+
+#: admin/templates/private-page-bulk-content.php:43
+msgid "This setting is used to specify the content for the private user page."
+msgstr ""
+
+#: admin/templates/restriction-permission-settings.php:13
+msgid "User Roles with Admin Permissions to WPPCP Restrictions"
+msgstr ""
+
+#: admin/templates/restriction-permission-settings.php:28
+msgid ""
+"This setting is used to specify the user roles allowed to add restrictions "
+"on WP Private Content Plus."
+msgstr ""
+
+#: admin/templates/search-general-settings.php:12
+msgid ""
+"Do you think adding search support for custom post types will benfit your "
+"users?"
+msgstr ""
+
+#: admin/templates/search-general-settings.php:13
+#, php-format
+msgid ""
+"%sGo PRO%s and allow users to search custom post types through your site "
+"search."
+msgstr ""
+
+#: admin/templates/search-general-settings.php:15
+#: admin/templates/search-restrictions.php:19
+#: admin/templates/welcome-screen.php:224
+#: admin/templates/welcome-screen.php:238
+#: templates/manage-file-attachments.php:29 templates/plugin-pro.php:46
+#: templates/plugins-feed.php:20 templates/post-page-restriction-meta.php:47
+#: templates/private-user-page.php:59
+msgid "View More"
+msgstr ""
+
+#: admin/templates/search-general-settings.php:28
+msgid "Blocked Posts for Searching"
+msgstr ""
+
+#: admin/templates/search-general-settings.php:38
+msgid "This setting is used to allow all posts search for all the users."
+msgstr ""
+
+#: admin/templates/search-general-settings.php:44
+msgid "Blocked Pages for Searching"
+msgstr ""
+
+#: admin/templates/search-general-settings.php:54
+msgid ""
+"This setting is used to globally block certain pages from appearing in "
+"search."
+msgstr ""
+
+#: admin/templates/search-restrictions.php:16
+msgid ""
+"Do you want to block certain user types from searching your important "
+"content?"
+msgstr ""
+
+#: admin/templates/search-restrictions.php:17
+#, php-format
+msgid "%sGo PRO%s and limit the searchable post types based on user roles."
+msgstr ""
+
+#: admin/templates/search-restrictions.php:32
+msgid "Everyone can Search"
+msgstr ""
+
+#: admin/templates/search-restrictions.php:36
+#: admin/templates/search-restrictions.php:52
+#: admin/templates/search-restrictions.php:68
+msgid "All Posts"
+msgstr ""
+
+#: admin/templates/search-restrictions.php:37
+#: admin/templates/search-restrictions.php:53
+#: admin/templates/search-restrictions.php:69
+msgid "All Pages"
+msgstr ""
+
+#: admin/templates/search-restrictions.php:41
+#: admin/templates/search-restrictions.php:58
+#: admin/templates/upme-general.php:37
+msgid "This setting is used type of posts allowed in search for guest users."
+msgstr ""
+
+#: admin/templates/search-restrictions.php:48
+msgid "Guests can Search"
+msgstr ""
+
+#: admin/templates/search-restrictions.php:64
+msgid "Members can Search"
+msgstr ""
+
+#: admin/templates/search-restrictions.php:73
+msgid "This setting is used type of posts allowed in search for member users."
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:11
+msgid "IP Based Restrictions"
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:16
+msgid "Enabled for Guests"
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:17
+msgid "Enabled for Guests and Members"
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:19
+msgid "This setting is used to define status of IP restrictions."
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:25
+#: admin/templates/site-lockdown-settings.php:57
+msgid "Allowed URL's"
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:28
+msgid ""
+"This setting is used to define the URL's accessible without checking the IP. "
+"Use new line for each URL."
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:34
+msgid "Whitelisted IP's"
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:37
+msgid ""
+"This setting is used to define the IP's allowed to acccess the site without "
+"restrictions. Use new line for each IP"
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:42
+#: admin/templates/site-lockdown-settings.php:65
+msgid "Redirect URL"
+msgstr ""
+
+#: admin/templates/security-ip-settings.php:45
+#: admin/templates/site-lockdown-settings.php:68
+msgid ""
+"This setting is used to define the URL to redirect the users with "
+"unauthorised access."
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:11
+msgid "Site Lockdown Status"
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:16
+#: admin/templates/upme-general.php:33
+msgid "Enabled"
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:19
+msgid "This setting is used to define status of entire site lockdown."
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:25
+msgid "Allowed Posts"
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:35
+msgid ""
+"This setting is used to define the posts allowed to visit after locking down "
+"entire site."
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:41
+msgid "Allowed Pages"
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:51
+msgid ""
+"This setting is used to define the pages allowed to visit after locking down "
+"entire site."
+msgstr ""
+
+#: admin/templates/site-lockdown-settings.php:60
+msgid ""
+"This setting is used to define the URL's allowed to acccess the site without "
+"restrictions. Use new line for each URL"
+msgstr ""
+
+#: admin/templates/upme-general.php:20
+msgid "Enable UPME Private Content Profile Tab"
+msgstr ""
+
+#: admin/templates/upme-general.php:23
+msgid ""
+"This setting is used to enable/disable private page content on UPME profile "
+"tab."
+msgstr ""
+
+#: admin/templates/upme-general.php:29
+msgid "Redirect Restricted Users to UPME Login"
+msgstr ""
+
+#: admin/templates/upme-member-list.php:16
+msgid "UPME Member List Visibility"
+msgstr ""
+
+#: admin/templates/upme-member-list.php:25
+#: admin/templates/upme-member-profile.php:25
+msgid "This setting is used to specify users allowed to view UPME Member List."
+msgstr ""
+
+#: admin/templates/upme-member-list.php:52
+#: admin/templates/upme-member-profile.php:52
+msgid ""
+"This setting is used to specify the user roles allowed to view UPME Member "
+"List by default."
+msgstr ""
+
+#: admin/templates/upme-member-profile.php:16
+msgid "UPME Member Profile Visibility"
+msgstr ""
+
+#: admin/templates/upme-search.php:16
+msgid "UPME Search Visibility"
+msgstr ""
+
+#: admin/templates/upme-search.php:25
+msgid "This setting is used to specify users allowed to view UPME Search."
+msgstr ""
+
+#: admin/templates/upme-search.php:52
+msgid ""
+"This setting is used to specify the user roles allowed to view UPME Search "
+"by default."
+msgstr ""
+
+#: admin/templates/user-role-hierarchy.php:17
+#: classes/class-wppcp-settings.php:216 classes/class-wppcp-settings.php:273
+msgid "User Role Hierarchy"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:3 classes/class-wppcp-settings.php:34
+#: classes/class-wppcp-settings.php:35
+msgid "Welcome to WP Private Content Plus"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:5
+msgid "Simple Setup - Flexible Restriction Rules - Awesome Features"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:6 templates/plugin-help.php:6
+msgid "Thank you for choosing WP Private Content Plus."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:12
+msgid "Quick Overview"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:21
+msgid "Protect You'r First Post"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:24
+msgid "Read Documentation"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:32
+msgid "Features"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:35
+msgid ""
+"Simplifies the process for protecting your important site content from "
+"guests,members,specific user roles or group of selected users."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:44
+msgid "Post / Page / CPT Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:47
+msgid ""
+"Easily add protection rules to posts/pages/custom post types based on "
+"different user types."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:59
+#: classes/class-wppcp-admin-stats.php:191
+#: classes/class-wppcp-settings.php:1463
+msgid "Menu Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:62
+msgid ""
+"Protect menu items based on different user types to create conditional menus."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:74
+#: classes/class-wppcp-admin-stats.php:197
+#: classes/class-wppcp-settings.php:1470
+msgid "Widget Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:77
+msgid ""
+"Easily add protection to all built-in and custom WordPress widgets based on "
+"different user types."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:89
+#: classes/class-wppcp-admin-stats.php:221
+#: classes/class-wppcp-settings.php:1498
+msgid "Search Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:92
+msgid ""
+"Expand site search to include custom post types and protect searching "
+"certain post types from different user levels."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:105
+#: classes/class-wppcp-admin-stats.php:209
+#: classes/class-wppcp-settings.php:1484
+msgid "Attachment Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:108
+msgid ""
+"Attach files to posts/pages/custom post types and protect them from "
+"different user levels. Direct access\n"
+"\t\t\t\t\t\tto attachments is restricted."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:121
+msgid "Site Password Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:124
+msgid ""
+"Protect your entire site with a single password and allow access only for "
+"users with a valid password.\n"
+"\t\t\t\t\t\t."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:138
+#: classes/class-wppcp-admin-stats.php:215 classes/class-wppcp-settings.php:310
+#: classes/class-wppcp-settings.php:754 classes/class-wppcp-settings.php:1491
+msgid "Private Page"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:141
+msgid ""
+"Advanced private page with private content, discussions and file sharing "
+"personalized for each user\n"
+"\t\t\t\t\t\t, creating a secure place."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:154
+msgid "User Profiles Made Easy Integration"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:157
+msgid ""
+"Integrattion with UPME plugin to get essential features such as frontend "
+"user login, user registration, member directory and member search\n"
+"\t\t\t\t\t\t."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:168
+msgid "View All Features"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:175
+msgid "Benifits of PRO Version"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:179 functions.php:78
+msgid "Membership Level Management"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:180 functions.php:79
+msgid "Sell Memberships with Woocommerce"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:181 functions.php:80
+msgid "Private Page Discussions"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:182 functions.php:81
+msgid "Private Page File Sharing"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:183 functions.php:82
+msgid "Mailchimp Content Locker"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:184 functions.php:83
+msgid "Awesome Frontend User Groups"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:185 functions.php:84
+msgid "Woocommerce Product Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:186 functions.php:85
+msgid "bbPress Forums and Topics Protection"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:187 functions.php:86
+msgid "Advanced Search Restrictions"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:188 functions.php:87
+msgid "Complete Protection for Post Attachments"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:193 classes/class-wppcp-settings.php:192
+msgid "PRO Version"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:195
+msgid "Personal License"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:197
+#: admin/templates/welcome-screen.php:248 functions.php:91
+msgid "Upgrade to PRO License"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:204
+msgid "Reviews"
+msgstr ""
+
+#: admin/templates/welcome-screen.php:211
+msgid ""
+"If you want private content for each different member of your site, this "
+"could be very helpful for you."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:214
+msgid ""
+"This is one of those features I’ve wanted for just about every coaching or "
+"mentoring site I’ve worked on. While not every membership or course site "
+"needs it, when you do, it’s often been hard to manage from within WordPress."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:216
+msgid ""
+"I’m excited that both LifterLMS and LearnDash are working on private content "
+"features for their LMS products. But if you’re not using those, until now "
+"you’ve been out of luck."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:218
+msgid "Not anymore."
+msgstr ""
+
+#: admin/templates/welcome-screen.php:233
+msgid ""
+"Absolutely love the idea behind this plugin for personalized content areas. "
+"Been considering how to make this happen for clients to keep conversation "
+"and content for projects outside of email without having to default to a "
+"project management program with a large learning curve. Something as simple "
+"as this page would be perfect!"
+msgstr ""
+
+#: classes/class-wppcp-admin-permissions.php:38
+#: classes/class-wppcp-admin-permissions.php:84
+msgid "Invalid request."
+msgstr ""
+
+#: classes/class-wppcp-admin-permissions.php:41
+#: classes/class-wppcp-admin-permissions.php:88
+msgid "Permission denied."
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:45
+msgid "WP Private Content Plus - Stats"
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:65
+msgid ""
+"Thank you for using <strong>WP Private Content Plus</strong> to protect your "
+"site."
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:66
+msgid "You are using WP Private Content Plus to protect following data types."
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:75
+#: classes/class-wppcp-admin-stats.php:92
+#: classes/class-wppcp-admin-stats.php:105
+#: classes/class-wppcp-admin-stats.php:159
+#: classes/class-wppcp-settings.php:1343 classes/class-wppcp-settings.php:1360
+#: classes/class-wppcp-settings.php:1373 classes/class-wppcp-settings.php:1427
+msgid " Posts "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:78
+#: classes/class-wppcp-admin-stats.php:95
+#: classes/class-wppcp-admin-stats.php:106
+#: classes/class-wppcp-admin-stats.php:162
+#: classes/class-wppcp-settings.php:1346 classes/class-wppcp-settings.php:1363
+#: classes/class-wppcp-settings.php:1374 classes/class-wppcp-settings.php:1430
+msgid " Pages "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:81
+#: classes/class-wppcp-admin-stats.php:107
+#: classes/class-wppcp-settings.php:1349 classes/class-wppcp-settings.php:1375
+msgid " Custom Post Types "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:86
+#: classes/class-wppcp-admin-stats.php:100
+#: classes/class-wppcp-admin-stats.php:108
+#: classes/class-wppcp-admin-stats.php:115
+#: classes/class-wppcp-admin-stats.php:122
+#: classes/class-wppcp-admin-stats.php:129
+#: classes/class-wppcp-settings.php:1354 classes/class-wppcp-settings.php:1368
+#: classes/class-wppcp-settings.php:1376 classes/class-wppcp-settings.php:1383
+#: classes/class-wppcp-settings.php:1390 classes/class-wppcp-settings.php:1397
+msgid " are protected"
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:114
+#: classes/class-wppcp-settings.php:1382
+msgid " Menu Items "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:121
+#: classes/class-wppcp-settings.php:1389
+msgid " Widgets "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:128
+#: classes/class-wppcp-settings.php:1396
+msgid " Post/Page Content Blocks "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:135
+#: classes/class-wppcp-settings.php:1403
+msgid " Users "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:135
+#: classes/class-wppcp-settings.php:1403
+msgid "have private page with protected content. "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:141
+#: classes/class-wppcp-settings.php:1409
+msgid " Post "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:144
+#: classes/class-wppcp-settings.php:1412
+msgid " Page "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:147
+#: classes/class-wppcp-settings.php:1415
+msgid " Custom Post Type "
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:152
+#: classes/class-wppcp-settings.php:1420
+msgid " attachments are protected"
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:166
+#: classes/class-wppcp-settings.php:1434
+msgid " are protected from search"
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:173
+#: classes/class-wppcp-settings.php:1442
+msgid "Individual Post/Page Protection"
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:179
+#: classes/class-wppcp-settings.php:1449
+msgid "Global Post/Page Protection"
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:185
+#: classes/class-wppcp-settings.php:1456
+msgid "Password Protection"
+msgstr ""
+
+#: classes/class-wppcp-admin-stats.php:203
+#: classes/class-wppcp-settings.php:1477
+msgid "Shortcode Protection"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:25
+msgid "Groups"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:26
+msgid "Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:27
+#: classes/class-wppcp-woocommerce-tab-manager.php:18
+msgid "Add New"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:28
+msgid "Add New Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:29
+#: classes/class-wppcp-woocommerce-tab-manager.php:20
+msgid "Edit"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:30
+msgid "Edit Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:31
+msgid "New Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:32
+#: classes/class-wppcp-woocommerce-tab-manager.php:23
+msgid "View"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:33
+msgid "View Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:34
+msgid "Search Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:35
+msgid "No Group found"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:36
+msgid "No Group found in Trash"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:54
+msgid "WP Private Content Plus - Add New Users"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:63
+msgid "WP Private Content Plus - Group Members"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:77
+msgid "Start typing username or email to Add New Members"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:102
+msgid "ID"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:103 templates/private-user-page.php:70
+msgid "Name"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:113
+msgid "Remove from Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:120
+msgid "Previous"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:124
+msgid "Next"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:129
+msgid "No Users Found"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:242
+msgid "Title"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:243
+msgid "Group ID"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:244
+msgid "Dates"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:316
+msgid "Select Group..."
+msgstr ""
+
+#: classes/class-wppcp-groups.php:320
+msgid "Assign Group"
+msgstr ""
+
+#: classes/class-wppcp-groups.php:358
+msgid "Users added to group."
+msgstr ""
+
+#: classes/class-wppcp-menu.php:64
+msgid "By Users"
+msgstr ""
+
+#: classes/class-wppcp-menu.php:80
+msgid "Permitted user roles"
+msgstr ""
+
+#: classes/class-wppcp-menu.php:108
+msgid "Permitted users"
+msgstr ""
+
+#: classes/class-wppcp-password-protected-content.php:31
+#: classes/class-wppcp-settings.php:483
+msgid "Protected Content"
+msgstr ""
+
+#: classes/class-wppcp-password-protected-content.php:32
+#: classes/class-wppcp-settings.php:484
+msgid ""
+"This content is password protected. Please enter the password to view the "
+"content."
+msgstr ""
+
+#: classes/class-wppcp-password-protected-content.php:134
+msgid "Please enter valid password."
+msgstr ""
+
+#: classes/class-wppcp-post-attachments.php:25
+msgid "WP Private Content Plus - File Attachments Settings"
+msgstr ""
+
+#: classes/class-wppcp-post-attachments.php:32
+msgid "WP Private Content Plus - Manage File Attachments"
+msgstr ""
+
+#: classes/class-wppcp-post-attachments.php:264
+#, php-format
+msgid "You need to <a href=\"%s\">login</a> before downloading this file."
+msgstr ""
+
+#: classes/class-wppcp-private-content.php:55
+#: classes/class-wppcp-private-content.php:86
+#: classes/class-wppcp-private-content.php:584
+#: classes/class-wppcp-private-content.php:615
+#: classes/class-wppcp-private-content.php:762
+#: classes/class-wppcp-private-content.php:851
+#: classes/class-wppcp-private-content.php:949
+#: classes/class-wppcp-private-content.php:994
+msgid "Private content module is disabled."
+msgstr ""
+
+#: classes/class-wppcp-private-content.php:75
+msgid "No content found."
+msgstr ""
+
+#: classes/class-wppcp-private-content.php:539
+msgid "Login to access this content"
+msgstr ""
+
+#: classes/class-wppcp-private-content.php:566
+msgid "You don't have permission to access this content"
+msgstr ""
+
+#: classes/class-wppcp-private-content.php:648
+msgid "My Private Page"
+msgstr ""
+
+#: classes/class-wppcp-private-content.php:969
+#: classes/class-wppcp-private-content.php:977
+msgid "Enter Password "
+msgstr ""
+
+#: classes/class-wppcp-private-content.php:970
+#: classes/class-wppcp-private-content.php:978
+msgid "Submit "
+msgstr ""
+
+#: classes/class-wppcp-private-posts-pages.php:44
+msgid "WP Private Content Plus - Restriction Settings"
+msgstr ""
+
+#: classes/class-wppcp-private-posts-pages.php:64
+msgid "WP Private Content Plus - Post Author Restrictions"
+msgstr ""
+
+#: classes/class-wppcp-private-posts-pages.php:213
+#: classes/class-wppcp-private-posts-pages.php:220
+#: classes/class-wppcp-private-posts-pages.php:433
+#: classes/class-wppcp-private-posts-pages.php:440
+#: classes/class-wppcp-private-posts-pages.php:518
+msgid "You don't have permission to view the content"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:140
+msgid "Please select a user."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:141
+msgid "Add to Post"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:142
+msgid "Insert Files to Post"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:143
+msgid "Removing User..."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:144
+msgid "Loading..."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:145
+msgid "Saving..."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:160
+msgid "Private Content Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:163
+msgid "Global Restrictions"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:166
+msgid "Search"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:166 classes/class-wppcp-settings.php:284
+#: classes/class-wppcp-settings.php:919
+msgid "Search Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:169 templates/global-password-form.php:59
+msgid "Password"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:169 classes/class-wppcp-settings.php:297
+msgid "Password Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:172
+msgid "Private User Page"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:175
+msgid "Admin Permissions"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:178
+msgid "Security Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:184
+msgid "User Profiles Made Easy"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:189 templates/plugin-help.php:23
+msgid "Getting Started"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:196
+msgid "Try PRO Version"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:199
+msgid "Addons"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:203
+msgid "FAQ"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:215 classes/class-wppcp-settings.php:272
+msgid "Information Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:217 classes/class-wppcp-settings.php:274
+msgid "Restriction Permissions"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:241 classes/class-wppcp-settings.php:279
+msgid "Post Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:243 classes/class-wppcp-settings.php:280
+msgid "Page Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:285 classes/class-wppcp-settings.php:921
+msgid "Search Restrictions"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:289 classes/class-wppcp-settings.php:944
+msgid "IP Restrictions"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:293
+msgid "Admin Menu Restrictions"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:303 classes/class-wppcp-settings.php:1202
+msgid "UPME General Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:304 classes/class-wppcp-settings.php:1203
+msgid "UPME Search Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:305 classes/class-wppcp-settings.php:1204
+msgid "UPME Member List Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:306 classes/class-wppcp-settings.php:1205
+msgid "UPME Member Profile Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:311
+msgid "Bulk Private Page Content"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:565
+msgid "Private content update failed."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:568
+msgid "Private content updated successfully."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:755
+msgid "Bulk Content"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:756
+msgid "Default Content"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:837
+msgid "Role Hierarchy saved succefully."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:840
+msgid "Role Hierarchy save failed."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1054
+msgid "Global Password Settings"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1117
+msgid "Admin Menu Permissions"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1508
+msgid "Deactivate WP Private Content Plus"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1514
+msgid "Are you sure that you would like to deactivate the plugin?"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1515
+msgid ""
+"Just a reminder - Currently WP Private Content Plus is protecting your "
+"important site content. Following content types are \n"
+"                                        protected on your site and these "
+"content will be visible to public once you deactivate the plugin."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1522
+msgid "Continue"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1532
+msgid ""
+"Please help us understand why you are removing our plugin and what we can do "
+"to improve our plugin."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1535
+msgid "I no longer need the plugin."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1536
+msgid "I found a better plugin."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1537
+msgid "Plugin Name"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1538
+msgid "I only needed the plugin for short period."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1539
+msgid "The plugin broke my site or stopped working"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1540
+msgid "What exactly happened?"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1541
+msgid "The feature I need is in PRO version and its expensive."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1542
+msgid "What's your budget?"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1543
+msgid "The feature I need is not available."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1544
+msgid "Let us know more about this feature"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1545
+msgid "Other."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1546
+msgid "Please explain the reason"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1550
+msgid ""
+"<strong>Submit & Deactivate</strong> option will send the following details "
+"to developers of the plugin. Your feedback will be \n"
+"                                    used to improve the future versions of "
+"the plugin."
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1553
+msgid "Reason for deactivation"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1554
+msgid "Plugin Version"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1555
+msgid "Activated Date"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1556
+msgid "Admin Email (If you tick the following checkbox)"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1561
+msgid ""
+"<b>I would like to get a response from developers regarding my feedback.</b>"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1568
+msgid "Submit & Deactivate"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1569
+msgid "Skip & Deactivate"
+msgstr ""
+
+#: classes/class-wppcp-settings.php:1570
+msgid "Close"
+msgstr ""
+
+#: classes/class-wppcp-site-lockdown.php:19
+#: classes/class-wppcp-site-lockdown.php:47
+msgid "Site Lockdown"
+msgstr ""
+
+#: classes/class-wppcp-site-lockdown.php:71
+msgid "Site Lockdown Settings"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:53
+#, php-format
+msgid "%s (Invalid)"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:57
+#, php-format
+msgid "%s (Pending)"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:70
+msgid "sub item"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:102
+msgid "Edit Menu Item"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:111
+msgid "URL"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:118
+msgid "Navigation Label"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:124
+msgid "Title Attribute"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:131
+msgid "Open link in a new window/tab"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:136
+msgid "CSS Classes (optional)"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:142
+msgid "Link Relationship (XFN)"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:148
+msgid "Description"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:150
+msgid ""
+"The description will be displayed in the menu if the current theme supports "
+"it."
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:159
+msgid "Move"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:160
+msgid "Up one"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:161
+msgid "Down one"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:164
+msgid "To the top"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:171
+#, php-format
+msgid "Original: %s"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:184
+msgid "Remove"
+msgstr ""
+
+#: classes/class-wppcp-walker-nav-menu-edit.php:185
+msgid "Cancel"
+msgstr ""
+
+#: classes/class-wppcp-widgets.php:39
+msgid "Visibility Roles"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:16
+msgid "Woo Product Tabs"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:17
+msgid "Woo Product Tab"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:19
+msgid "Add New Woo Product Tab"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:21
+msgid "Edit Woo Product Tab"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:22
+msgid "New Woo Product Tab"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:24
+msgid "View Woo Product Tab"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:25
+msgid "Search Woo Product Tab"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:26
+msgid "No Woo Product Tab found"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:27
+msgid "No Woo Product Tab found in Trash"
+msgstr ""
+
+#: classes/class-wppcp-woocommerce-tab-manager.php:80
+msgid "WP Private Content Plus - WooCommrce Product Tab Settings"
+msgstr ""
+
+#: functions.php:25
+msgid "WPExpert Developer"
+msgstr ""
+
+#: functions.php:58
+msgid "Go PRO License"
+msgstr ""
+
+#: functions.php:60
+msgid "Hide Info"
+msgstr ""
+
+#: functions.php:74
+msgid "Why Go PRO License?"
+msgstr ""
+
+#: functions.php:123
+msgid "Help"
+msgstr ""
+
+#: functions.php:124 templates/plugin-help.php:107
+#: wp-private-content-plus.php:216
+msgid "Documentation"
+msgstr ""
+
+#: templates/addons-feed.php:13
+msgid "Activated"
+msgstr ""
+
+#: templates/addons-feed.php:16
+msgid "Deactivated"
+msgstr ""
+
+#: templates/addons-feed.php:29
+msgid "Purchase"
+msgstr ""
+
+#: templates/file-attachments-settings.php:11
+msgid "File List Title"
+msgstr ""
+
+#: templates/file-attachments-settings.php:19
+msgid "File List Description"
+msgstr ""
+
+#: templates/global-password-form.php:65
+msgid "Submit"
+msgstr ""
+
+#: templates/manage-file-attachments.php:23
+msgid ""
+"Do you want make attachments \n"
+"            completely secured?"
+msgstr ""
+
+#: templates/manage-file-attachments.php:25
+#, php-format
+msgid ""
+"%sGo PRO%s and secure direct access to your attachments. Post attachments "
+"added in free version cannot be converted to PRO version. Free version "
+"attchments\n"
+"         are uploaded to uploads folder and hence you can't protect\n"
+"        direct access to the files."
+msgstr ""
+
+#: templates/manage-file-attachments.php:36
+msgid "Add Files"
+msgstr ""
+
+#: templates/manage-file-attachments.php:70
+#: templates/manage-file-attachments.php:124
+msgid "File Name"
+msgstr ""
+
+#: templates/manage-file-attachments.php:74
+#: templates/manage-file-attachments.php:128
+msgid "File Description"
+msgstr ""
+
+#: templates/manage-file-attachments.php:78
+#: templates/manage-file-attachments.php:132
+msgid "File Visibility"
+msgstr ""
+
+#: templates/manage-file-attachments.php:88
+#: templates/manage-file-attachments.php:142
+msgid "Download Permission"
+msgstr ""
+
+#: templates/plugin-help.php:5
+#, php-format
+msgid "Welcome to WP Private Content Plus %s"
+msgstr ""
+
+#: templates/plugin-help.php:7
+msgid "Visit Plugin Home Page"
+msgstr ""
+
+#: templates/plugin-help.php:19
+msgid "Whats's New in"
+msgstr ""
+
+#: templates/plugin-help.php:26
+msgid "Documentation and Support"
+msgstr ""
+
+#: templates/plugin-help.php:35
+msgid "What's New in 1.10"
+msgstr ""
+
+#: templates/plugin-help.php:36
+msgid "Restrict menu items for specific users"
+msgstr ""
+
+#: templates/plugin-help.php:37
+msgid "Create user groups and add members"
+msgstr ""
+
+#: templates/plugin-help.php:38
+msgid "Restrict post/page/custom post type content by user groups"
+msgstr ""
+
+#: templates/plugin-help.php:50
+msgid "Private Content Shortcodes"
+msgstr ""
+
+#: templates/plugin-help.php:52
+msgid ""
+"First, you have to enable Private Content Module by going into the "
+"<b>General Settings</b> section. \n"
+"\t\t\tThis settings allows you to use content restriction features of this "
+"plugin."
+msgstr ""
+
+#: templates/plugin-help.php:60
+msgid "Using Shortcodes"
+msgstr ""
+
+#: templates/plugin-help.php:61
+msgid ""
+"You can use the private content shortcodes within any post/page/custom post "
+"type to retrict content. Place the\n"
+"\t\t\trestricted content within opening and closing shortcode tags as shown "
+"in the screen. Change the shortcode and parameters based on \n"
+"\t\t\tyour requirements"
+msgstr ""
+
+#: templates/plugin-help.php:69
+msgid "Features and Usage"
+msgstr ""
+
+#: templates/plugin-help.php:72
+msgid "Restrict entire posts/pages/custom post types"
+msgstr ""
+
+#: templates/plugin-help.php:73
+msgid "Restrict content by User roles"
+msgstr ""
+
+#: templates/plugin-help.php:74
+msgid "Restrict content for Guest or Members"
+msgstr ""
+
+#: templates/plugin-help.php:75
+msgid "Restrict content by User role Levels"
+msgstr ""
+
+#: templates/plugin-help.php:76
+msgid "Restrict content by WordPress capabilities"
+msgstr ""
+
+#: templates/plugin-help.php:77
+msgid "Private Page for user profiles"
+msgstr ""
+
+#: templates/plugin-help.php:78
+msgid "Restrict menu for members, guests, user roles"
+msgstr ""
+
+#: templates/plugin-help.php:79
+msgid "Restrict widgets for members, guests, user roles"
+msgstr ""
+
+#: templates/plugin-help.php:80
+msgid "Restrict post attachments and downloads to for members, guests"
+msgstr ""
+
+#: templates/plugin-help.php:81
+msgid "Restrict content by multiple user meta keys"
+msgstr ""
+
+#: templates/plugin-help.php:82
+msgid "Restrict content by multiple user meta values"
+msgstr ""
+
+#: templates/plugin-help.php:83
+msgid "Restrict search content by user types"
+msgstr ""
+
+#: templates/plugin-help.php:84
+msgid "Integration with User Profiles Made Easy"
+msgstr ""
+
+#: templates/plugin-help.php:85
+msgid "Global Site Protection with Single Password"
+msgstr ""
+
+#: templates/plugin-help.php:90 templates/plugin-help.php:114
+msgid "Video Documentation"
+msgstr ""
+
+#: templates/plugin-help.php:110
+msgid "Complete documentation for this plugin is available at "
+msgstr ""
+
+#: templates/plugin-help.php:111
+msgid "WP Expert Developer"
+msgstr ""
+
+#: templates/plugin-help.php:117
+msgid "Video documentation for this plugin is available at "
+msgstr ""
+
+#: templates/plugin-help.php:121
+msgid "Support"
+msgstr ""
+
+#: templates/plugin-help.php:123
+msgid "You can get free support fot this plugin at "
+msgstr ""
+
+#: templates/plugin-help.php:124
+msgid "wordpress.org"
+msgstr ""
+
+#: templates/plugin-pro-addons.php:3
+msgid "Add-Ons for WP Private Content Plus"
+msgstr ""
+
+#: templates/plugin-pro-addons.php:6
+msgid ""
+"Extend the functionality of WP Private Content Plus through these Addons."
+msgstr ""
+
+#: templates/plugin-pro.php:3
+msgid "Welcome to WP Private Content PRO"
+msgstr ""
+
+#: templates/plugin-pro.php:22
+msgid ""
+"WP Private Content Pro simplifies the process for protecting your important "
+"site content. This is the premium version of WP Private Content Plus. PRO "
+"version extends the features of free version and also provides\n"
+" new content restriction types such as Private Groups, Private Content "
+"Blocks, Mailchimp Locker, Advanced Serch Restrictions. More features are "
+"coming soon."
+msgstr ""
+
+#: templates/plugin-pro.php:26
+msgid "User Group Management"
+msgstr ""
+
+#: templates/plugin-pro.php:27
+msgid "Private Group Discussions"
+msgstr ""
+
+#: templates/plugin-pro.php:28
+msgid "Private Group Files"
+msgstr ""
+
+#: templates/plugin-pro.php:29
+msgid "Private Content Blocks"
+msgstr ""
+
+#: templates/plugin-pro.php:30
+msgid "Woocommerce Product Protection by Default"
+msgstr ""
+
+#: templates/plugin-pro.php:31
+msgid "bbPress Forum Protection by Default"
+msgstr ""
+
+#: templates/plugin-pro.php:33
+msgid "Mailchimp Locker"
+msgstr ""
+
+#: templates/plugin-pro.php:34
+msgid "Advanced Search Restrictions on Custom Post Types"
+msgstr ""
+
+#: templates/plugin-pro.php:35
+msgid "Premium Support"
+msgstr ""
+
+#: templates/post-page-author-restriction-meta.php:14
+msgid "Limit Access to Author"
+msgstr ""
+
+#: templates/post-page-author-restriction-meta.php:17
+msgid "No"
+msgstr ""
+
+#: templates/post-page-author-restriction-meta.php:18
+msgid "Yes"
+msgstr ""
+
+#: templates/post-page-author-restriction-meta.php:25
+#: templates/post-page-restriction-meta.php:119
+msgid "Redirection URL"
+msgstr ""
+
+#: templates/post-page-restriction-meta.php:42
+#, php-format
+msgid "Tired of adding protection rules for each %s?"
+msgstr ""
+
+#: templates/post-page-restriction-meta.php:44
+#, php-format
+msgid ""
+"%sGo PRO%s and save time by adding global protection\n"
+"\t        to your favorite Custom Post Types."
+msgstr ""
+
+#: templates/post-page-restriction-meta.php:53
+#, php-format
+msgid "Tired of adding group of permitted users to each %s?"
+msgstr ""
+
+#: templates/post-page-restriction-meta.php:54
+#, php-format
+msgid ""
+"%sGo PRO%s and add users to user groups or membership levels. Protection "
+"rules can be applied on user groups or membership \n"
+"        \tlevels instead of selecting users for each post/page"
+msgstr ""
+
+#: templates/post-page-restriction-meta.php:96
+msgid "Allowed Users"
+msgstr ""
+
+#: templates/private-user-page.php:21
+msgid "Private User Page Contents"
+msgstr ""
+
+#: templates/private-user-page.php:32
+msgid "Select User"
+msgstr ""
+
+#: templates/private-user-page.php:37
+msgid "Load User"
+msgstr ""
+
+#: templates/private-user-page.php:55
+msgid ""
+"Tired of using seperate channels to manage private user data and "
+"comminications?"
+msgstr ""
+
+#: templates/private-user-page.php:56
+#, php-format
+msgid ""
+"%sGo PRO%s and get the advantage of private discussions, private file "
+"sharing, private notifications and custom private tabs\n"
+"                    , all in one place."
+msgstr ""
+
+#: templates/private-user-page.php:76
+msgid "Private content"
+msgstr ""
+
+#: wp-private-content-plus.php:217
+msgid "Upgrade to PRO"
+msgstr ""
