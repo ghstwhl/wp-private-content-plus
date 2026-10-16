@@ -13,7 +13,7 @@ class WPPCP_Posts{
         global $wpdb;
 
         $post_json_results = array();
-        if( ( current_user_can('manage_options') || current_user_can('wpppcp_manage_options') )
+        if( ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') )
         && check_ajax_referer( 'wppcp-admin', 'verify_nonce',false ) ){
             $search_text  = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
             $search_text = '%' . $wpdb->esc_like( $search_text ) . '%';
@@ -36,7 +36,7 @@ class WPPCP_Posts{
         global $wpdb;
 
         $post_json_results = array();
-        if( ( current_user_can('manage_options') || current_user_can('wpppcp_manage_options') )
+        if( ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') )
         && check_ajax_referer( 'wppcp-admin', 'verify_nonce',false ) ){
             $search_text  = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
             $search_text = '%' . $wpdb->esc_like( $search_text ) . '%';
@@ -59,7 +59,7 @@ class WPPCP_Posts{
         
 
         $post_json_results = array();
-        if( ( current_user_can('manage_options') || current_user_can('wpppcp_manage_options') )
+        if( ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') )
         && check_ajax_referer( 'wppcp-admin', 'verify_nonce',false ) ){
             $search_text  = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
             $search_text = '%' . $wpdb->esc_like( $search_text ) . '%';
