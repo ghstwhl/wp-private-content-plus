@@ -19,6 +19,8 @@ class WPPCP_Password_Protected_Content{
 
         add_action('init', array($this, 'init'));           
         add_filter('template_include', array($this, 'validate_restrictions'),99);         
+        add_action('template_redirect', array($this, 'validate_feed_restrictions'), 1);         
+        add_filter('rest_authentication_errors', array($this, 'validate_rest_restrictions'));         
     }
 
     public function init(){
@@ -157,5 +159,57 @@ class WPPCP_Password_Protected_Content{
         return hash_equals( $this->get_password_cookie_value($site_password), $cookie_value );
     }
 
+
+    /* TRUE when the request carries no password and the visitor is not logged in.
+       Feeds and REST never reach the template_include filter, so they need their own
+       gate. Logged in users are left alone so the editor keeps working. */
+    private function global_password_blocks_request(){
+        $private_content_settings = get_option('wppcp_options');
+
+        if(!isset($private_content_settings['general']['private_content_module_status'])){
+            return FALSE;
+        }
+
+        $password_settings = isset($private_content_settings['password_global']) ? $private_content_settings['password_global'] : array();
+        $global_password_protect = isset($password_settings['global_password_protect']) ? $password_settings['global_password_protect'] : 'disabled';
+        $site_password = isset($password_settings['global_protect_password']) ? $password_settings['global_protect_password'] : '';
+
+        if($global_password_protect == 'disabled' || trim($site_password) == ''){
+            return FALSE;
+        }
+
+        if(is_user_logged_in()){
+            return FALSE;
+        }
+
+        return ! $this->is_password_cookie_valid($site_password);
+    }
+
+    /* Feeds are generated after template_redirect but before template_include, so
+       without this the whole site stays readable over RSS while the gate is on. */
+    public function validate_feed_restrictions(){
+        if(is_feed() && $this->global_password_blocks_request()){
+            status_header(403);
+            nocache_headers();
+            exit;
+        }
+    }
+
+    /* REST requests never reach the template loader at all. */
+    public function validate_rest_restrictions($errors){
+        if(is_wp_error($errors)){
+            return $errors;
+        }
+
+        if($this->global_password_blocks_request()){
+            return new WP_Error(
+                'wppcp_global_password_required',
+                __('This content is password protected. Please enter the password to view the content.','wppcp'),
+                array('status' => 401)
+            );
+        }
+
+        return $errors;
+    }
 
 }
