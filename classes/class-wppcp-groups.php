@@ -336,7 +336,7 @@ class WPPCP_Groups{
         $options = '';
         if ( $query->have_posts() ) {
             while ($query->have_posts()) : $query->the_post();            
-                 $options .= '<option value="'.get_the_ID().'">'.get_the_title().'</option>';
+                 $options .= '<option value="'.esc_attr(get_the_ID()).'">'.esc_html(get_the_title()).'</option>';
             endwhile;
             wp_reset_query();
         }
