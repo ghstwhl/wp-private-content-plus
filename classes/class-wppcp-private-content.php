@@ -65,6 +65,14 @@ class WPPCP_Private_Content{
                 $user_id =  $this->current_user;
             }
 
+            // A member may only read their own private page. Without this the
+            // shortcode hands any member's page to any logged in visitor who
+            // supplies a user_id, which is how the UPME profile tab leaks it.
+            if($user_id !== (int) $this->current_user
+                && ! current_user_can('manage_options') && ! current_user_can('wppcp_manage_options')){
+                return apply_filters('wppcp_private_page_empty_message' , __('No content found.','wppcp'));
+            }
+
             $sql  = $wpdb->prepare( "SELECT content FROM " . $wpdb->prefix . WPPCP_PRIVATE_CONTENT_TABLE . " WHERE user_id = %d ", $user_id );
             $result = $wpdb->get_results($sql);
 
