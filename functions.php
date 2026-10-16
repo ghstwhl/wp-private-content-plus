@@ -306,18 +306,37 @@ function exclude_restricted_posts_from_search( $query ) {
         $private_content_settings = get_option( 'wppcp_options' );
 
         // 1. Handle Site Lockdown
+        // The lockdown module only turns anonymous visitors away, so only their
+        // search needs restricting; logged in users keep their full results. It
+        // also stands down entirely when the private content module is off, so
+        // this has to match that or a stale setting keeps search emptied.
         $lockdown_data = $private_content_settings['site_lockdown'] ?? array();
-        if ( ( $lockdown_data['lockdown_status'] ?? 'disabled' ) === 'enabled' ) {
-            $allowed_posts = $lockdown_data['lockdown_allowed_posts'] ?? array();
-            $query->set( 'post__in', ! empty( $allowed_posts ) ? (array) $allowed_posts : array( 0 ) );
+        $lockdown_active = isset( $private_content_settings['general']['private_content_module_status'] )
+            && ( $lockdown_data['lockdown_status'] ?? 'disabled' ) === 'enabled'
+            && ! is_user_logged_in();
+
+        if ( $lockdown_active ) {
+            // The module's skip list covers allowed pages as well as allowed posts,
+            // so both have to survive here or an allowed page never appears in search.
+            $allowed = array_merge( (array) ( $lockdown_data['lockdown_allowed_posts'] ?? array() ),
+                                    (array) ( $lockdown_data['lockdown_allowed_pages'] ?? array() ) );
+            $query->set( 'post__in', ! empty( $allowed ) ? $allowed : array( 0 ) );
             return; // Lockdown applied, no need to proceed further
         }
 
         // 2. Handle Global Post Restrictions
-        $global_restriction = $private_content_settings['global_page_restriction'] ?? array();
-        if ( ( $global_restriction['restrict_all_pages_status'] ?? '0' ) === '1' ) {
-            $query->set( 'post__in', array( 0 ) );
-            return; // Global restriction applied
+        global $wppcp;
+        $global_restriction = $private_content_settings['global_post_restriction'] ?? array();
+        if ( ( $global_restriction['restrict_all_posts_status'] ?? '0' ) === '1' ) {
+
+            // The visibility setting names who is allowed to see those posts, so only
+            // hide them from a visitor the rule actually excludes. Reading the page keys
+            // here meant the rule never applied to posts at all; applying it regardless
+            // of visibility would empty search for the 'Everyone' setting.
+            if ( ! $wppcp->private_posts_pages->global_type_protection_status( 'post' ) ) {
+                $query->set( 'post__in', array( 0 ) );
+                return; // Global restriction applied
+            }
         }
 
         // 3. Handle Meta-Based Restrictions (applies to any post type)
