@@ -69,7 +69,7 @@ class WPPCP_Posts{
 
             
 
-            $query  = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE $wpdb->posts.post_title like %s  && $wpdb->posts.post_status='publish'  && $wpdb->posts.post_type='%s' order by $wpdb->posts.post_date desc limit 20", $search_text, $post_type );
+            $query  = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE $wpdb->posts.post_title like %s  && $wpdb->posts.post_status='publish'  && $wpdb->posts.post_type=%s order by $wpdb->posts.post_date desc limit 20", $search_text, $post_type );
 
             $result = $wpdb->get_results($query);
             if($result){
