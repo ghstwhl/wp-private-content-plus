@@ -219,71 +219,54 @@ function wppcp_admin_templates_allowed_html(){
 }
 
 
-function wppcp_rest_check_post_visibility($response, $post, $request) {               
+/* Returns a WP_Error when the current user may not see this post over REST, or
+   NULL when the response can be sent. This runs for every user: visibility is
+   checked against who is asking, not against whether anyone is logged in. */
+function wppcp_rest_restriction_error($post){
+    global $wppcp;
 
-    if (!is_user_logged_in()) {
+    $private_content_settings = get_option('wppcp_options');
 
-        $private_content_settings = get_option('wppcp_options');
-
-        // Site lockdown
-        $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
-        $site_lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
-        if($site_lockdown_status == 'enabled' ) {
-            $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
-            if(!in_array($post->ID,$lockdown_allowed_posts)){
-                return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-            }            
-        }
-
-        // Global post restrictions        
-        $global_post_restriction = isset($private_content_settings['global_post_restriction']) ? $private_content_settings['global_post_restriction'] : array();
-        $restrict_all_posts_status = isset($global_post_restriction['restrict_all_posts_status']) ? $global_post_restriction['restrict_all_posts_status'] :'0';
-        if($restrict_all_posts_status == '1' ) {
-            return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-        }
-
-        // Handle post/page restrictions
-        $visibility = get_post_meta( $post->ID, '_wppcp_post_page_visibility', true );
-        if( in_array( trim($visibility) , array('member','role','users') )   ){
+    // Site lockdown still applies only to visitors who are not logged in, which
+    // is what the front end does.
+    $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
+    $site_lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
+    if($site_lockdown_status == 'enabled' && ! is_user_logged_in()) {
+        $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
+        if(!in_array($post->ID,$lockdown_allowed_posts)){
             return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
         }
     }
-    return $response;
+
+    if(current_user_can('manage_options') || current_user_can('wppcp_manage_options')){
+        return NULL;
+    }
+
+    // The post's own restriction, then the global one when the post has none.
+    $protection_status = $wppcp->private_posts_pages->protection_status($post->ID);
+
+    if(! $protection_status){
+        return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
+    }
+
+    if(trim($protection_status) == 'none' && ! $wppcp->private_posts_pages->global_protection_status($post->ID)){
+        return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
+    }
+
+    return NULL;
+}
+
+function wppcp_rest_check_post_visibility($response, $post, $request) {
+    $restriction_error = wppcp_rest_restriction_error($post);
+    return $restriction_error ? $restriction_error : $response;
 }
 add_filter('rest_prepare_post', 'wppcp_rest_check_post_visibility', 10, 3);
 
 
 
-function wppcp_rest_check_page_visibility($response, $post, $request) {               
-
-    if (!is_user_logged_in()) {
-
-        $private_content_settings = get_option('wppcp_options');
-
-        // Site lockdown
-        $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
-        $site_lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
-        if($site_lockdown_status == 'enabled' ) {
-            $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
-            if(!in_array($post->ID,$lockdown_allowed_posts)){
-                return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-            }            
-        }
-
-        // Global post restrictions        
-        $global_post_restriction = isset($private_content_settings['global_page_restriction']) ? $private_content_settings['global_page_restriction'] : array();
-        $restrict_all_posts_status = isset($global_post_restriction['restrict_all_pages_status']) ? $global_post_restriction['restrict_all_pages_status'] :'0';
-        if($restrict_all_posts_status == '1' ) {
-            return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-        }
-
-        // Handle post/page restrictions
-        $visibility = get_post_meta( $post->ID, '_wppcp_post_page_visibility', true );
-        if( in_array( trim($visibility) , array('member','role','users') )   ){
-            return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-        }
-    }
-    return $response;
+function wppcp_rest_check_page_visibility($response, $post, $request) {
+    $restriction_error = wppcp_rest_restriction_error($post);
+    return $restriction_error ? $restriction_error : $response;
 }
 add_filter('rest_prepare_page', 'wppcp_rest_check_page_visibility', 10, 3);
 
