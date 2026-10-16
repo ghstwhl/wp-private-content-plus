@@ -129,5 +129,13 @@ the reasoning behind any one of them can be read in full with `git show`.
 
 ### Housekeeping
 
+- **Removed the dead social locker.** `WPPCP_Social_Locker` was absent from the
+  bootstrap's include list, so `[wppcp_social_locker]` never registered and the
+  feature was unreachable. Its vendored library `js/shareIt-js/`, the plugin's own
+  `js/wppcp-social-locker.js` and `templates/social-locker/` went with it. The
+  vendored file carried a Google API key belonging to that library's original
+  author: inert, since nothing read it and the API it targeted was retired, but not
+  something to leave sitting in a public repository.
+
 - **Twelve templates had no `ABSPATH` guard**, unlike the rest of the plugin. `86bc577`
 - **An unescaped group title** was concatenated into an option element. `d65ba86`

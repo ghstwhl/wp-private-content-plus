@@ -112,10 +112,6 @@ in both a logged-out and a logged-in session.
 
 ## Known gaps
 
-- `WPPCP_Social_Locker` is never instantiated and is absent from the bootstrap's
-  include list, so `[wppcp_social_locker]` renders as literal text. The vendored
-  library it would load, `js/shareIt-js/`, is dead weight and contains a Google
-  API key belonging to that library's original author.
 - REST restrictions cover posts and pages only; custom post types are not hooked.
 - What WordPress does with a `WP_Error` returned from `rest_prepare_post` inside
   a *collection* response has not been verified against core, so the REST
