@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 	global $wppcp,$woo_tabs_restriction_params;
 	extract($woo_tabs_restriction_params);
 

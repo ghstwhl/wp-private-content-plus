@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 
 $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'getting_started';
 

@@ -1,4 +1,7 @@
-<?php   global $wppcp_addon_template_data;
+<?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+   global $wppcp_addon_template_data;
         extract($wppcp_addon_template_data); 
 ?>
 <div id="wppcp-addons-feed">

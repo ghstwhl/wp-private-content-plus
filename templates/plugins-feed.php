@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 	global $wppcp,$wpexpert_plugins_data;
 	extract($wpexpert_plugins_data);
 

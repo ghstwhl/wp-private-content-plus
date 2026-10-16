@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 
 $title = __( 'Welcome to WP Private Content PRO', 'wppcp' ) ;
 $image_url = WPPCP_PLUGIN_URL.'images/docs/protect_red.png';

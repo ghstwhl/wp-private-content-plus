@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 	global $wppcp,$post_page_restriction_params;
 	extract($post_page_restriction_params);
 
