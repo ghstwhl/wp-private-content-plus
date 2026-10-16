@@ -196,7 +196,7 @@ class WPPCP_Groups{
             $user_results = $user_query->get_results();
 
             foreach($user_results as $user){
-                if($user->ID != $this->current_user && !in_array($user->ID, $group_users)){
+                if($user->ID != get_current_user_id() && !in_array($user->ID, $group_users)){
                     array_push($user_json_results , array('id' => $user->ID, 'name' => $user->data->display_name." (".$user->data->user_email.")") ) ;
                 }                           
             }
