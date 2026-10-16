@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
     global $wppcp_password_protect_data;
     extract($wppcp_password_protect_data);
 

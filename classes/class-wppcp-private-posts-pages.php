@@ -208,14 +208,14 @@ class WPPCP_Private_Posts_Pages{
                 foreach ($wp_query->posts as $key => $post_obj) {
                     $protection_status = $this->protection_status($post_obj->ID);
                     if(!$protection_status){
-                        $wp_query->posts[$key]->post_content = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+                        $this->mask_restricted_post( $wp_query->posts[$key] );
                     }else{
                         if(trim($protection_status) == 'none'){
 
                             if($this->global_protection_status($post_obj->ID)){
                                 
                             }else{                               
-                               $wp_query->posts[$key]->post_content = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+                               $this->mask_restricted_post( $wp_query->posts[$key] );
                                                   
                             }
                         }
@@ -230,6 +230,9 @@ class WPPCP_Private_Posts_Pages{
 
     public function protection_status($post_id){
         global $wppcp;
+         // $this->current_user is an int in some call paths and a WP_User object in
+         // others, so normalise it before the role and user branches use it.
+         $current_user_id = is_object($this->current_user) ? (int) $this->current_user->ID : (int) $this->current_user;
 
         $visibility = get_post_meta( $post_id, '_wppcp_post_page_visibility', true );
         $visible_roles = get_post_meta( $post_id, '_wppcp_post_page_roles', true );
@@ -268,7 +271,7 @@ class WPPCP_Private_Posts_Pages{
                     if(count($visible_roles) == 0){
                         return FALSE;
                     }else{
-                        $user_roles = $wppcp->roles_capability->get_user_roles_by_id($this->current_user);
+                        $user_roles = $wppcp->roles_capability->get_user_roles_by_id($current_user_id);
                         foreach ($visible_roles as  $visible_role ) {
                             if(in_array($visible_role, $user_roles)){
                                 return TRUE;
@@ -289,7 +292,7 @@ class WPPCP_Private_Posts_Pages{
                     }else{
                         
                         foreach ($allowed_users as  $allowed_user ) {
-                            if(in_array($this->current_user->ID, $allowed_users)){
+                            if(in_array($current_user_id, $allowed_users)){
                                 return TRUE;
                             }
                         }
@@ -310,6 +313,13 @@ class WPPCP_Private_Posts_Pages{
     }
 
     public function global_protection_status($post_id){
+        return $this->global_type_protection_status( get_post_type($post_id) );
+    }
+
+    /* The same decision as global_protection_status(), keyed by post type, so a
+       caller that only knows the type - a search query, for instance - can ask
+       without having to invent a post id. */
+    public function global_type_protection_status($post_type){
         global $wppcp;
 
         $predefined_post_types = array('forum','topic','product');
@@ -317,7 +327,6 @@ class WPPCP_Private_Posts_Pages{
 
         $private_content_settings = get_option('wppcp_options');
 
-        $post_type = get_post_type($post_id);
         if($post_type != 'post' && $post_type != 'page' && !in_array($post_type, $predefined_post_types)){
             return TRUE;
         }
@@ -511,7 +520,7 @@ class WPPCP_Private_Posts_Pages{
                 foreach ($wp_query->posts as $key => $post_obj) {
                     $protection_status = $this->protection_author_status($post_obj->ID);
                     if(!$protection_status){
-                        $wp_query->posts[$key]->post_content = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+                        $this->mask_restricted_post( $wp_query->posts[$key] );
                     }
                 }
             }
@@ -525,19 +534,34 @@ class WPPCP_Private_Posts_Pages{
 
         if(!is_user_logged_in()){
             return FALSE;
-        }else{
-
-            $post   = get_post( $post_id );
-            $author_id = $post->post_author;
-
-            
-            if($this->current_user->ID == $author_id || current_user_can('manage_options')
-                ){
-                return TRUE;
-            }else{
-                return FALSE;
-            }
         }
+
+        $post = get_post( $post_id );
+        if(! $post ){
+            return FALSE;
+        }
+
+        // $this->current_user is an int in some call paths and a WP_User object
+        // in others, so normalise it the way protection_status() does; as written
+        // this compared against null and denied the post's own author.
+        $current_user_id = is_object($this->current_user) ? (int) $this->current_user->ID : (int) $this->current_user;
+
+        if($current_user_id === (int) $post->post_author
+            || current_user_can('manage_options') || current_user_can('wppcp_manage_options') ){
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    /* Mask every readable field of a restricted post in a listing. Rewriting
+       post_content alone left its title and excerpt on display. */
+    private function mask_restricted_post($post_obj){
+        $mask = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+
+        $post_obj->post_title   = $mask;
+        $post_obj->post_excerpt = $mask;
+        $post_obj->post_content = $mask;
     }
 }
 

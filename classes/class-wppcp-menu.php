@@ -3,6 +3,9 @@
 /* Manage menu related settings */
 class WPPCP_Menu{
 
+    public $private_content_settings;
+
+
 	/* Initialize menu related acttions and filters */
 	public function __construct(){
 		global $wppcp;

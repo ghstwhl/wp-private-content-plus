@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 	global $wppcp,$post_page_restriction_params;
 	extract($post_page_restriction_params);
 
@@ -99,7 +102,7 @@
 		<select name="wppcp_post_page_users[]" id="wppcp_post_page_users" multiple class="wppcp-select2-setting" placeholder="<?php _e('Select','wppcp'); ?>" >
             <?php foreach ($allowed_users as $user_id) {
             		$user = get_user_by( 'id', $user_id ); 
-            		$display_name = $user->data->display_name;
+            		$display_name = $user ? $user->data->display_name : '';
             ?>
             	<option value='<?php echo esc_attr($user_id); ?>' selected ><?php echo esc_html($display_name); ?></option>
             <?php } ?>

@@ -2,6 +2,11 @@
 
 class WPPCP_UPME{
 
+    public $current_user;
+    public $private_content_settings;
+    public $upme_options;
+
+
 	public function __construct(){
 		$this->upme_options = get_option('upme_options');
 		$this->private_content_settings  = get_option('wppcp_options');

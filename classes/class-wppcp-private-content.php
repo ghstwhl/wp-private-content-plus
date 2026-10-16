@@ -5,6 +5,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* Manage content restriction shortcodes */
 class WPPCP_Private_Content{
+
+    public $status;
+
     
     public $current_user;
     public $private_content_settings;
@@ -60,6 +63,14 @@ class WPPCP_Private_Content{
                 $user_id =  (int) $user_id;
             }else{
                 $user_id =  $this->current_user;
+            }
+
+            // A member may only read their own private page. Without this the
+            // shortcode hands any member's page to any logged in visitor who
+            // supplies a user_id, which is how the UPME profile tab leaks it.
+            if($user_id !== (int) $this->current_user
+                && ! current_user_can('manage_options') && ! current_user_can('wppcp_manage_options')){
+                return apply_filters('wppcp_private_page_empty_message' , __('No content found.','wppcp'));
             }
 
             $sql  = $wpdb->prepare( "SELECT content FROM " . $wpdb->prefix . WPPCP_PRIVATE_CONTENT_TABLE . " WHERE user_id = %d ", $user_id );
@@ -1011,6 +1022,14 @@ class WPPCP_Private_Content{
             return $this->get_restriction_message($atts,$content,$private_content_result);
         }        
 
+        // WooCommerce may not be active, and a logged out visitor has no user to
+        // check. Either way nobody can be shown to have bought the product, so the
+        // content stays hidden rather than the request dying on an undefined
+        // function.
+        if( ! function_exists('wc_customer_bought_product') || ! $user ){
+            return $message;
+        }
+
         if($product_id != '' && wc_customer_bought_product( $user->user_email, $user->ID, $product_id )){
             return do_shortcode($content);
         }else{
@@ -1030,7 +1049,16 @@ class WPPCP_Private_Content{
 
         ), $atts));
         
-        $user_id =  ($user_id == '') ? get_current_user_id() : $user_id;
+        $user_id =  ($user_id == '') ? get_current_user_id() : absint($user_id);
+
+        // This lists posts restricted to a user, so it belongs to that user alone,
+        // or to someone who manages restrictions. Without this any author could
+        // publish the shortcode with another user's id and make the list of posts
+        // hidden from everyone else readable.
+        if( ! is_user_logged_in() || ( $user_id !== get_current_user_id()
+            && ! current_user_can('manage_options') && ! current_user_can('wppcp_manage_options') ) ){
+            return '';
+        }
         
         $query = new WP_Query( array( 
             'post_type' => sanitize_text_field($post_type),
@@ -1070,7 +1098,20 @@ class WPPCP_Private_Content{
 
         ), $atts));
         
-        $role =  ($role == '') ? '' : $role;
+        $role =  ($role == '') ? '' : sanitize_text_field($role);
+
+        // A visitor may list what is restricted to a role they hold themselves;
+        // another role's restrictions are not theirs to enumerate.
+        if( ! is_user_logged_in() ){
+            return '';
+        }
+
+        if( ! current_user_can('manage_options') && ! current_user_can('wppcp_manage_options') ){
+            $current_roles = $wppcp->roles_capability->get_user_roles_by_id( get_current_user_id() );
+            if( ! in_array( $role, (array) $current_roles ) ){
+                return '';
+            }
+        }
         
         $query = new WP_Query( array( 
             'post_type' => sanitize_text_field($post_type),

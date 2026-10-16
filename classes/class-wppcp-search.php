@@ -16,7 +16,14 @@ class WPPCP_Search{
 				$search_blocked_ids = $this->get_globally_blocked_posts();
 				$search_allowed_types = $this->verify_search_restrictions();
 
-		   		$query->set('post__not_in', $search_blocked_ids );
+				// Merge with anything already excluded rather than replacing it: the
+				// restricted-post ids that exclude_restricted_posts_from_search() set on
+				// this same query run first and would otherwise be discarded here.
+				$already_blocked = $query->get('post__not_in');
+				$already_blocked = is_array($already_blocked) ? $already_blocked : array();
+				$search_blocked_ids = is_array($search_blocked_ids) ? $search_blocked_ids : array();
+
+		   		$query->set('post__not_in', array_values(array_unique(array_merge($already_blocked, $search_blocked_ids))) );
 		   		$query->set('post_type', $search_allowed_types );
 			}
 		}

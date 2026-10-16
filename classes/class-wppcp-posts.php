@@ -13,7 +13,7 @@ class WPPCP_Posts{
         global $wpdb;
 
         $post_json_results = array();
-        if( ( current_user_can('manage_options') || current_user_can('wpppcp_manage_options') )
+        if( ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') )
         && check_ajax_referer( 'wppcp-admin', 'verify_nonce',false ) ){
             $search_text  = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
             $search_text = '%' . $wpdb->esc_like( $search_text ) . '%';
@@ -36,7 +36,7 @@ class WPPCP_Posts{
         global $wpdb;
 
         $post_json_results = array();
-        if( ( current_user_can('manage_options') || current_user_can('wpppcp_manage_options') )
+        if( ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') )
         && check_ajax_referer( 'wppcp-admin', 'verify_nonce',false ) ){
             $search_text  = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
             $search_text = '%' . $wpdb->esc_like( $search_text ) . '%';
@@ -59,7 +59,7 @@ class WPPCP_Posts{
         
 
         $post_json_results = array();
-        if( ( current_user_can('manage_options') || current_user_can('wpppcp_manage_options') )
+        if( ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') )
         && check_ajax_referer( 'wppcp-admin', 'verify_nonce',false ) ){
             $search_text  = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
             $search_text = '%' . $wpdb->esc_like( $search_text ) . '%';
@@ -69,7 +69,7 @@ class WPPCP_Posts{
 
             
 
-            $query  = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE $wpdb->posts.post_title like %s  && $wpdb->posts.post_status='publish'  && $wpdb->posts.post_type='%s' order by $wpdb->posts.post_date desc limit 20", $search_text, $post_type );
+            $query  = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE $wpdb->posts.post_title like %s  && $wpdb->posts.post_status='publish'  && $wpdb->posts.post_type=%s order by $wpdb->posts.post_date desc limit 20", $search_text, $post_type );
 
             $result = $wpdb->get_results($query);
             if($result){

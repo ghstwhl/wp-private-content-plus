@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
     global $wppcp,$wppcp_private_page_params;
     extract($wppcp_private_page_params);
     $user_query = new WP_User_Query( array( 'exclude' => array( 1 ) ) );

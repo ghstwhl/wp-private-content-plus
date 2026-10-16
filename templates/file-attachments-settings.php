@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 	global $wppcp,$wppcp_attachments_params;
 	extract($wppcp_attachments_params);
 

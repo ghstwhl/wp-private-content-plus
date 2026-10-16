@@ -59,15 +59,31 @@ class WPPCP_Widgets{
 
 	public function save_widget_options( $instance, $new_instance ) {
 
-	    if ( empty( $new_instance['wppcp_visibility'] ) ) {
-	        $new_instance['wppcp_visibility'] = 0;
+	    // WordPress passes the widget's own sanitised instance first and the raw
+	    // submitted form data second. Returning the raw array - which is what this
+	    // used to do - discarded the sanitisation the widget's update() had just
+	    // performed, for every widget on the site. So the plugin's own two fields are
+	    // taken from the submitted data and sanitised here, and everything else is
+	    // left as the widget produced it.
+	    if ( ! is_array( $instance ) ) {
+	        return $instance;
 	    }
 
-	    if ( empty( $new_instance['wppcp_visibility_roles'] ) ) {
-	        $new_instance['wppcp_visibility_roles'] = array();
+	    $visibility = isset( $new_instance['wppcp_visibility'] ) ? sanitize_text_field( $new_instance['wppcp_visibility'] ) : '';
+	    if ( empty( $visibility ) ) {
+	        $visibility = 0;
 	    }
-	 
-	    return $new_instance;
+	    $instance['wppcp_visibility'] = $visibility;
+
+	    $roles = array();
+	    if ( isset( $new_instance['wppcp_visibility_roles'] ) && is_array( $new_instance['wppcp_visibility_roles'] ) ) {
+	        foreach ( $new_instance['wppcp_visibility_roles'] as $role ) {
+	            $roles[] = sanitize_text_field( $role );
+	        }
+	    }
+	    $instance['wppcp_visibility_roles'] = $roles;
+
+	    return $instance;
 	}
 
 

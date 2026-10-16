@@ -3,7 +3,7 @@
   Plugin Name: WP Private Content Plus
   Plugin URI: https://www.wpexpertdeveloper.com/wp-private-content-plus/
   Description: Advanced private content restrictions for WordPress
-  Version: 3.6.2
+  Version: 3.6.3
   Author: Rakhitha Nimesh
   Author URI: https://www.wpexpertdeveloper.com
  */
@@ -13,7 +13,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 if ( ! defined( 'WPPCP_VERSION' ) ) {
-    define( 'WPPCP_VERSION', '3.6.2' );
+    define( 'WPPCP_VERSION', '3.6.3' );
 }
 
 register_activation_hook( __FILE__, 'wppcp_install_db_tables' );

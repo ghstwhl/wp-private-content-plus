@@ -5,6 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* Manage settings of WP Private Content Plus plugin */
 class WPPCP_Settings{
+
+    public $plugin_settings_tabs;
+    public $settings;
+    public $wppcp_options;
+
     
     public $template_locations;
     public $current_user;
@@ -526,7 +531,7 @@ class WPPCP_Settings{
                 if($_POST && isset($_POST['wppcp_private_page_user_load']) && ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') ) ){
                     $private_page_user = isset($_POST['wppcp_private_page_user']) ? (int) sanitize_text_field( $_POST['wppcp_private_page_user'] ) : 0;
                     $user = get_user_by( 'id', $private_page_user );
-                    $wppcp_private_page_params['display_name'] = $user->data->display_name;
+                    $wppcp_private_page_params['display_name'] = $user ? $user->data->display_name : '';
                     $wppcp_private_page_params['user_id'] = $private_page_user;
                 }
         
@@ -1558,7 +1563,7 @@ class WPPCP_Settings{
         if($_POST && isset($_POST['wppcp_private_page_user_load']) && ( current_user_can('manage_options') || current_user_can('wppcp_manage_options') ) ){
             $private_page_user = isset($_POST['wppcp_private_page_user']) ? (int) sanitize_text_field( $_POST['wppcp_private_page_user'] ) : 0;
             $user = get_user_by( 'id', $private_page_user );
-            $wppcp_private_page_params['display_name'] = $user->data->display_name;
+            $wppcp_private_page_params['display_name'] = $user ? $user->data->display_name : '';
             $wppcp_private_page_params['user_id'] = $private_page_user;
         }
 

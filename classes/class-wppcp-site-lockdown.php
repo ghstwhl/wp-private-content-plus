@@ -1,6 +1,10 @@
 <?php
 class WPPCP_Site_Lockdown{
 
+    public $settings;
+    public $user_id;
+
+
 	public function __construct(){
 		add_action('wppcp_admin_menu_pages',array($this, 'admin_menu_pages'));
 
@@ -126,35 +130,41 @@ class WPPCP_Site_Lockdown{
             return;
         }
 
-        if(is_feed()){
-            return;
-        }
-
         if (is_user_logged_in ()) {
             return;
         }else{
             $this->user_id = 0;
         }
 
+        // A locked down site must not keep publishing its whole content over RSS.
+        // This runs before the skip list, so the query string form /?feed=rss2 cannot
+        // be matched by the site root entry and slip through.
+        if(is_feed()){
+            status_header(403);
+            nocache_headers();
+            exit;
+        }
+
         $redirect_url = isset($lockdown_settings['redirect_url']) ? $lockdown_settings['redirect_url'] : '';
         if(trim($redirect_url) == ''){
             $redirect_url = site_url();
         }
+        $redirect_url_compare = rtrim($redirect_url, "/");
 
         // Add globally skipped URL's, pages and posts
-        $skipped_urls = array( strtok(rtrim($redirect_url,"/"), '?') , strtok(rtrim(wp_login_url(),"/"),'?'), strtok(rtrim(wp_registration_url(),"/"),'?') , strtok(rtrim(wp_lostpassword_url(),"/"),'?') );
+        $skipped_urls = array( strtok(rtrim(wp_login_url(),"/"),'?'), strtok(rtrim(wp_registration_url(),"/"),'?') , strtok(rtrim(wp_lostpassword_url(),"/"),'?') );
         $skipped_pages = isset($lockdown_settings['lockdown_allowed_pages']) ? (array) $lockdown_settings['lockdown_allowed_pages'] : array();
         
         foreach ($skipped_pages as $page_id) {
            if($page_id != '0' && $page_id != ''){
-                array_push($skipped_urls, strtok(rtrim(get_permalink( $page_id ),"/"),'?') );
+                array_push($skipped_urls, rtrim(get_permalink( $page_id ),"/") ); // keep any query: on plain permalinks ?p=N IS the identity
            }
         }
 
         $skipped_posts = isset($lockdown_settings['lockdown_allowed_posts']) ? (array) $lockdown_settings['lockdown_allowed_posts'] : array() ;
         foreach ($skipped_posts as $page_id) {
            if($page_id != '0' && $page_id != ''){
-                array_push($skipped_urls, strtok(rtrim(get_permalink( $page_id ),"/"),'?') );
+                array_push($skipped_urls, rtrim(get_permalink( $page_id ),"/") ); // keep any query: on plain permalinks ?p=N IS the identity
            }
         }
 
@@ -166,9 +176,9 @@ class WPPCP_Site_Lockdown{
             }
         }
 
-        $current_page_url = rtrim(wppcp_current_page_url(),"/");
+        $current_page_full_url = rtrim(wppcp_current_page_url(),"/");
 
-        $parsed_url = parse_url($current_page_url);
+        $parsed_url = parse_url($current_page_full_url);
         $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
         $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
         $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -178,18 +188,27 @@ class WPPCP_Site_Lockdown{
         $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
  
         $current_page_url = rtrim($scheme.$user.$pass.$host.$port.$path,"/");
-        if(in_array($current_page_url, $skipped_urls)){
+        // Never redirect the lock target to itself, or the request loops. This is an
+        // exact comparison, so the site root carrying a query string is not mistaken
+        // for the root itself and skipped.
+        if($current_page_full_url === $redirect_url_compare){
+            return;
+        }
+
+        // The full URL is compared first, then the query stripped form, so a
+        // whitelisted URL still matches when tracking parameters are appended.
+        if(in_array($current_page_full_url, $skipped_urls) || in_array($current_page_url, $skipped_urls)){
             return;
         }else{
 
             // Check for URL exceptions in admin area                
             if('wp-login' == $redirect_url){
-                $url = add_query_arg( 'redirect_to', $current_page_url, wp_login_url() );
+                $url = add_query_arg( 'redirect_to', $current_page_full_url, wp_login_url() );
                 wp_redirect(esc_url($url));
                 
             }else{
                 
-                $url = add_query_arg( 'redirect_to', $current_page_url, ($redirect_url) );
+                $url = add_query_arg( 'redirect_to', $current_page_full_url, ($redirect_url) );
                 wp_redirect(esc_url($url));
             }             
             exit;

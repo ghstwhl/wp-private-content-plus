@@ -76,6 +76,12 @@ class WPPCP_Post_Attachments{
             return;
         }
 
+        // The display side skips these post types, so there is nothing to save for
+        // them. This list was declared and then never used.
+        if ( in_array( get_post_type( $post_id ), $skipped_types ) ) {
+            return;
+        }
+
         $wppcp_post_files_list_title = isset($_POST['wppcp_post_files_list_title']) ? sanitize_text_field($_POST['wppcp_post_files_list_title']) : '';
 		$wppcp_post_files_list_description = isset($_POST['wppcp_post_files_list_description']) ? sanitize_textarea_field($_POST['wppcp_post_files_list_description']) : '';
 		update_post_meta( $post_id, '_wppcp_post_files_list_title', $wppcp_post_files_list_title );
@@ -87,10 +93,23 @@ class WPPCP_Post_Attachments{
 
 		if(is_array($wppcp_attachments)){
 			foreach ($wppcp_attachments as $key => $wppcp_attachment) {
+                $attach_id = (int) $key;
+
+                // Only ids that really are attachments, and that this user is
+                // allowed to read, get listed. Without this any id at all could be
+                // named here and then fetched through the download endpoint.
+                if ( ! $attach_id || get_post_type( $attach_id ) !== 'attachment' || ! current_user_can( 'read_post', $attach_id ) ) {
+                    continue;
+                }
+
+                if ( ! is_array( $wppcp_attachment ) ) {
+                    continue;
+                }
+
                 foreach ($wppcp_attachment as $wppcp_attachment_key => $value) {
                     $wppcp_attachment[$wppcp_attachment_key] = sanitize_text_field($value);
                 }
-				$wppcp_attachment['attach_id'] = (int) $key;
+				$wppcp_attachment['attach_id'] = $attach_id;
 				array_push($wppcp_post_attachments,$wppcp_attachment);
 			}
 
@@ -131,7 +150,7 @@ class WPPCP_Post_Attachments{
 
     				$attachment_status = FALSE;
 	                foreach($post_attachments as $attach_data){
-	                    if($attach_data['attach_id'] != ''){
+	                    if( ! empty( $attach_data['attach_id'] ) ){
 	                    	
 
 	                    	if($this->verify_attachment_permission($attach_data)){
@@ -222,47 +241,135 @@ class WPPCP_Post_Attachments{
     }
 
     public function file_attachment_download(){
-    	if(isset($_GET['wppcp_file_download']) && sanitize_text_field($_GET['wppcp_file_download']) =='yes'){
-			$wppcp_file_download = sanitize_text_field($_GET['wppcp_file_download']);
-			$wppcp_file_id = isset($_GET['wppcp_file_id']) ? (int) sanitize_text_field($_GET['wppcp_file_id']) : '';
-			$wppcp_post_id = isset($_GET['wppcp_post_id']) ? (int) sanitize_text_field($_GET['wppcp_post_id']) : '';
+        if( ! isset($_GET['wppcp_file_download']) || sanitize_text_field($_GET['wppcp_file_download']) !== 'yes' ){
+            return;
+        }
 
-			if($wppcp_file_id != '' && $wppcp_post_id != ''){
-				$file_link = wp_get_attachment_url($wppcp_file_id);
+        // absint() collapses '', 'abc', '0' and negatives all to 0, so this is the
+        // only comparison that reliably rejects a missing/empty id on PHP 8.
+        $wppcp_file_id = isset($_GET['wppcp_file_id']) ? absint($_GET['wppcp_file_id']) : 0;
+        $wppcp_post_id = isset($_GET['wppcp_post_id']) ? absint($_GET['wppcp_post_id']) : 0;
 
-				$upload_dir = wp_upload_dir(); 
-				$file_dir =  str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_link);
+        if( $wppcp_file_id < 1 || $wppcp_post_id < 1 ){
+            return;
+        }
 
-				$post_attachments = get_post_meta( $wppcp_post_id, '_wppcp_post_attachments', true );
-				foreach ($post_attachments as $key => $attach_data) {
-					if($attach_data['attach_id'] == $wppcp_file_id){
+        $file_link = wp_get_attachment_url($wppcp_file_id);
+        if( ! $file_link ){
+            return; // attachment was deleted, or its _wp_attached_file meta is gone
+        }
 
-                        if ($this->verify_download_permission($attach_data)){
+        $upload_dir = wp_upload_dir();
+        $file_dir = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_link);
 
-    						$file_mime_type = isset($attach_data['mime']) ? $attach_data['mime'] : '';
-    						if($file_mime_type != ''){
+        if( $file_dir === '' || $file_dir === $file_link ){
+            return;
+        }
 
-    							header('Cache-Control: public');
-    							header('Content-Description: File Transfer');
-    							header('Content-disposition: attachment;filename='.basename($file_dir));
+        // Resolve the path and confirm it really lands inside the uploads
+        // directory: wp_get_attachment_url() pastes the raw _wp_attached_file
+        // meta onto the base URL, so a value containing ../ would otherwise walk
+        // out of uploads and read any file the web user can reach.
+        $real_file = realpath($file_dir);
+        $real_base = realpath($upload_dir['basedir']);
 
-    						
-    							header('Content-Type: '. $file_mime_type);
-    							header('Content-Transfer-Encoding: binary');
-    							header('Content-Length: '. filesize($file_dir));
-    							readfile($file_dir);
-    							exit;
-    						}
-                        }else {
-                            echo sprintf(__('You need to <a href="%s">login</a> before downloading this file.','wppcp'),wp_login_url());
-                            exit();
-                        }
-						
-					}
-				}
-				
-			}			
-		}
+        if( $real_file === false || $real_base === false ){
+            return;
+        }
+
+        if( strpos($real_file, $real_base . DIRECTORY_SEPARATOR) !== 0 ){
+            return;
+        }
+
+        if( ! is_file($real_file) || ! is_readable($real_file) ){
+            return;
+        }
+
+        $post_attachments = get_post_meta( $wppcp_post_id, '_wppcp_post_attachments', true );
+        if( ! is_array($post_attachments) ){
+            return;
+        }
+
+        foreach ($post_attachments as $attach_data) {
+            if( ! isset($attach_data['attach_id']) || (int) $attach_data['attach_id'] !== $wppcp_file_id ){
+                continue;
+            }
+
+            // The post named in the URL must be one this visitor may view, and the
+            // attachment's own visibility still has to allow them.
+            if( ! $this->current_user_can_view_post($wppcp_post_id) ){
+                return;
+            }
+
+            if( ! $this->verify_attachment_permission($attach_data) ){
+                continue;
+            }
+
+            if( ! $this->verify_download_permission($attach_data) ){
+                echo sprintf(__('You need to <a href="%s">login</a> before downloading this file.','wppcp'),wp_login_url());
+                exit();
+            }
+
+            $file_mime_type = isset($attach_data['mime']) ? $attach_data['mime'] : '';
+            if( $file_mime_type === '' ){
+                continue;
+            }
+
+            header('Cache-Control: private, no-store, max-age=0');   // gated file: no shared cache may replay it
+            header('Content-Description: File Transfer');
+            header('Content-disposition: attachment;filename="'.basename($real_file).'"');
+            header('Content-Type: '. $file_mime_type);
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: '. filesize($real_file));
+            readfile($real_file);
+            exit;
+        }
     }
+    /* TRUE when the current visitor may view the post the download link was
+       rendered on. Without it, any post that merely lists the attachment id
+       acts as a ticket for the file. */
+    private function current_user_can_view_post($post_id){
+        global $wppcp;
+
+        if(current_user_can('manage_options') || current_user_can('wppcp_manage_options')){
+            return TRUE;
+        }
+
+        // Site lockdown covers the whole site, so it is checked first.
+        $private_content_settings = get_option('wppcp_options');
+        $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
+        $lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
+
+        if($lockdown_status == 'enabled' && ! is_user_logged_in()){
+            $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
+            if(! in_array($post_id, $lockdown_allowed_posts)){
+                return FALSE;
+            }
+        }
+
+        // The same per-post and global checks the plugin applies when deciding
+        // whether to redirect a visitor away from the post itself.
+        $protection = $wppcp->private_posts_pages;
+
+        // Author restrictions are gated on the front end by
+        // validate_post_author_restrictions(), so the download has to agree.
+        if( get_post_meta( $post_id, '_wppcp_post_page_author_visibility', true ) == 'yes'
+            && ! $protection->protection_author_status($post_id) ){
+            return FALSE;
+        }
+
+        $protection_status = $protection->protection_status($post_id);
+        if(! $protection_status){
+            return FALSE;
+        }
+
+        if(trim($protection_status) == 'none'){
+            return (bool) $protection->global_protection_status($post_id);
+        }
+
+
+        return TRUE;
+    }
+
 }
 

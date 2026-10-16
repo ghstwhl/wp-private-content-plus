@@ -196,7 +196,7 @@ class WPPCP_Groups{
             $user_results = $user_query->get_results();
 
             foreach($user_results as $user){
-                if($user->ID != $this->current_user && !in_array($user->ID, $group_users)){
+                if($user->ID != get_current_user_id() && !in_array($user->ID, $group_users)){
                     array_push($user_json_results , array('id' => $user->ID, 'name' => $user->data->display_name." (".$user->data->user_email.")") ) ;
                 }                           
             }
@@ -336,7 +336,7 @@ class WPPCP_Groups{
         $options = '';
         if ( $query->have_posts() ) {
             while ($query->have_posts()) : $query->the_post();            
-                 $options .= '<option value="'.get_the_ID().'">'.get_the_title().'</option>';
+                 $options .= '<option value="'.esc_attr(get_the_ID()).'">'.esc_html(get_the_title()).'</option>';
             endwhile;
             wp_reset_query();
         }

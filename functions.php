@@ -157,22 +157,39 @@ function wppcp_display_info_buttons($url,$type){
 
 
 function wppcp_get_client_ip() {
-    $ipaddress = '';
-    if (getenv('HTTP_CLIENT_IP'))
-        $ipaddress = getenv('HTTP_CLIENT_IP');
-    else if(getenv('HTTP_X_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-    else if(getenv('HTTP_X_FORWARDED'))
-        $ipaddress = getenv('HTTP_X_FORWARDED');
-    else if(getenv('HTTP_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_FORWARDED_FOR');
-    else if(getenv('HTTP_FORWARDED'))
-       $ipaddress = getenv('HTTP_FORWARDED');
-    else if(getenv('REMOTE_ADDR'))
-        $ipaddress = getenv('REMOTE_ADDR');
-    else
-        $ipaddress = 'UNKNOWN';
-    return $ipaddress;
+    $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
+    // Forwarding headers are chosen by the client, so they are only believed
+    // when the request actually arrived from a proxy the site trusts. Without
+    // that, REMOTE_ADDR is the one address a visitor cannot pick for itself.
+    $trusted_proxies = apply_filters('wppcp_trusted_proxies', array());
+
+    if(!is_array($trusted_proxies) || !in_array($remote_addr, $trusted_proxies)){
+        return $remote_addr;
+    }
+
+    // Walk the chain right to left: anything a client appends to
+    // X-Forwarded-For lands to the left of the address the proxy recorded.
+    $forwarded = array();
+    foreach(array('HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED') as $header){
+        if(empty($_SERVER[$header])){
+            continue;
+        }
+        foreach(explode(',', $_SERVER[$header]) as $candidate){
+            $candidate = trim($candidate);
+            if(filter_var($candidate, FILTER_VALIDATE_IP)){
+                $forwarded[] = $candidate;
+            }
+        }
+    }
+
+    for($i = count($forwarded) - 1; $i >= 0; $i--){
+        if(!in_array($forwarded[$i], $trusted_proxies)){
+            return $forwarded[$i];
+        }
+    }
+
+    return $remote_addr;
 }
 
 function wppcp_admin_templates_allowed_html(){
@@ -202,71 +219,61 @@ function wppcp_admin_templates_allowed_html(){
 }
 
 
-function wppcp_rest_check_post_visibility($response, $post, $request) {               
+/* Returns a WP_Error when the current user may not see this post over REST, or
+   NULL when the response can be sent. This runs for every user: visibility is
+   checked against who is asking, not against whether anyone is logged in. */
+function wppcp_rest_restriction_error($post){
+    global $wppcp;
 
-    if (!is_user_logged_in()) {
+    $private_content_settings = get_option('wppcp_options');
 
-        $private_content_settings = get_option('wppcp_options');
-
-        // Site lockdown
-        $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
-        $site_lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
-        if($site_lockdown_status == 'enabled' ) {
-            $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
-            if(!in_array($post->ID,$lockdown_allowed_posts)){
-                return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-            }            
-        }
-
-        // Global post restrictions        
-        $global_post_restriction = isset($private_content_settings['global_post_restriction']) ? $private_content_settings['global_post_restriction'] : array();
-        $restrict_all_posts_status = isset($global_post_restriction['restrict_all_posts_status']) ? $global_post_restriction['restrict_all_posts_status'] :'0';
-        if($restrict_all_posts_status == '1' ) {
-            return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-        }
-
-        // Handle post/page restrictions
-        $visibility = get_post_meta( $post->ID, '_wppcp_post_page_visibility', true );
-        if( in_array( trim($visibility) , array('member','role','users') )   ){
+    // Site lockdown still applies only to visitors who are not logged in, which
+    // is what the front end does.
+    $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
+    $site_lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
+    if($site_lockdown_status == 'enabled' && ! is_user_logged_in()) {
+        $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
+        if(!in_array($post->ID,$lockdown_allowed_posts)){
             return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
         }
     }
-    return $response;
+
+    if(current_user_can('manage_options') || current_user_can('wppcp_manage_options')){
+        return NULL;
+    }
+
+    // The post's own restriction, then the global one when the post has none.
+    $protection_status = $wppcp->private_posts_pages->protection_status($post->ID);
+
+    if(! $protection_status){
+        return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
+    }
+
+    if(trim($protection_status) == 'none' && ! $wppcp->private_posts_pages->global_protection_status($post->ID)){
+        return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
+    }
+
+    // Author restrictions are gated on the front end by
+    // validate_post_author_restrictions(), so REST has to agree.
+    if( get_post_meta( $post->ID, '_wppcp_post_page_author_visibility', true ) == 'yes'
+        && ! $wppcp->private_posts_pages->protection_author_status( $post->ID ) ){
+        return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
+    }
+
+    return NULL;
+}
+
+function wppcp_rest_check_post_visibility($response, $post, $request) {
+    $restriction_error = wppcp_rest_restriction_error($post);
+    return $restriction_error ? $restriction_error : $response;
 }
 add_filter('rest_prepare_post', 'wppcp_rest_check_post_visibility', 10, 3);
 
 
 
-function wppcp_rest_check_page_visibility($response, $post, $request) {               
-
-    if (!is_user_logged_in()) {
-
-        $private_content_settings = get_option('wppcp_options');
-
-        // Site lockdown
-        $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
-        $site_lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
-        if($site_lockdown_status == 'enabled' ) {
-            $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
-            if(!in_array($post->ID,$lockdown_allowed_posts)){
-                return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-            }            
-        }
-
-        // Global post restrictions        
-        $global_post_restriction = isset($private_content_settings['global_page_restriction']) ? $private_content_settings['global_page_restriction'] : array();
-        $restrict_all_posts_status = isset($global_post_restriction['restrict_all_pages_status']) ? $global_post_restriction['restrict_all_pages_status'] :'0';
-        if($restrict_all_posts_status == '1' ) {
-            return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-        }
-
-        // Handle post/page restrictions
-        $visibility = get_post_meta( $post->ID, '_wppcp_post_page_visibility', true );
-        if( in_array( trim($visibility) , array('member','role','users') )   ){
-            return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
-        }
-    }
-    return $response;
+function wppcp_rest_check_page_visibility($response, $post, $request) {
+    $restriction_error = wppcp_rest_restriction_error($post);
+    return $restriction_error ? $restriction_error : $response;
 }
 add_filter('rest_prepare_page', 'wppcp_rest_check_page_visibility', 10, 3);
 
@@ -289,18 +296,37 @@ function exclude_restricted_posts_from_search( $query ) {
         $private_content_settings = get_option( 'wppcp_options' );
 
         // 1. Handle Site Lockdown
+        // The lockdown module only turns anonymous visitors away, so only their
+        // search needs restricting; logged in users keep their full results. It
+        // also stands down entirely when the private content module is off, so
+        // this has to match that or a stale setting keeps search emptied.
         $lockdown_data = $private_content_settings['site_lockdown'] ?? array();
-        if ( ( $lockdown_data['lockdown_status'] ?? 'disabled' ) === 'enabled' ) {
-            $allowed_posts = $lockdown_data['lockdown_allowed_posts'] ?? array();
-            $query->set( 'post__in', ! empty( $allowed_posts ) ? (array) $allowed_posts : array( 0 ) );
+        $lockdown_active = isset( $private_content_settings['general']['private_content_module_status'] )
+            && ( $lockdown_data['lockdown_status'] ?? 'disabled' ) === 'enabled'
+            && ! is_user_logged_in();
+
+        if ( $lockdown_active ) {
+            // The module's skip list covers allowed pages as well as allowed posts,
+            // so both have to survive here or an allowed page never appears in search.
+            $allowed = array_merge( (array) ( $lockdown_data['lockdown_allowed_posts'] ?? array() ),
+                                    (array) ( $lockdown_data['lockdown_allowed_pages'] ?? array() ) );
+            $query->set( 'post__in', ! empty( $allowed ) ? $allowed : array( 0 ) );
             return; // Lockdown applied, no need to proceed further
         }
 
         // 2. Handle Global Post Restrictions
-        $global_restriction = $private_content_settings['global_page_restriction'] ?? array();
-        if ( ( $global_restriction['restrict_all_pages_status'] ?? '0' ) === '1' ) {
-            $query->set( 'post__in', array( 0 ) );
-            return; // Global restriction applied
+        global $wppcp;
+        $global_restriction = $private_content_settings['global_post_restriction'] ?? array();
+        if ( ( $global_restriction['restrict_all_posts_status'] ?? '0' ) === '1' ) {
+
+            // The visibility setting names who is allowed to see those posts, so only
+            // hide them from a visitor the rule actually excludes. Reading the page keys
+            // here meant the rule never applied to posts at all; applying it regardless
+            // of visibility would empty search for the 'Everyone' setting.
+            if ( ! $wppcp->private_posts_pages->global_type_protection_status( 'post' ) ) {
+                $query->set( 'post__in', array( 0 ) );
+                return; // Global restriction applied
+            }
         }
 
         // 3. Handle Meta-Based Restrictions (applies to any post type)

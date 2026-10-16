@@ -5,6 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* Manage content restriction shortcodes */
 class WPPCP_Password_Protected_Content{
+
+    public $password_protect_error;
+    public $password_protect_status;
+
     
     public $current_user;
     public $private_content_settings;
@@ -15,6 +19,8 @@ class WPPCP_Password_Protected_Content{
 
         add_action('init', array($this, 'init'));           
         add_filter('template_include', array($this, 'validate_restrictions'),99);         
+        add_action('template_redirect', array($this, 'validate_feed_restrictions'), 1);         
+        add_filter('rest_authentication_errors', array($this, 'validate_rest_restrictions'));         
     }
 
     public function init(){
@@ -31,7 +37,9 @@ class WPPCP_Password_Protected_Content{
         $protected_form_header = isset($password_settings['password_form_title']) ? $password_settings['password_form_title'] : __('Protected Content','wppcp');
         $protected_form_message = isset($password_settings['password_form_message']) ? $password_settings['password_form_message'] : __('This content is password protected. Please enter the password to view the content.','wppcp');
          
-        $site_password_status = isset( $_COOKIE['wppcp_global_password_protected_status'] ) ? sanitize_text_field($_COOKIE['wppcp_global_password_protected_status']) : 'INACTIVE';
+        // Only a cookie this site issued for the password that is currently configured
+        // is trusted; the value is a keyed hash and cannot be minted from outside.
+        $site_password_status = $this->is_password_cookie_valid($site_password) ? 'ACTIVE' : 'INACTIVE';
      
 
         if(!isset($private_content_settings['general']['private_content_module_status'])){
@@ -109,7 +117,6 @@ class WPPCP_Password_Protected_Content{
     }
 
     public function verify_global_password_protection($site_password){
-        $site_password_status = isset( $_COOKIE['wppcp_global_password_protected_status'] ) ? sanitize_text_field($_COOKIE['wppcp_global_password_protected_status']) : 'INACTIVE';
            
         $this->password_protect_error = '';
         $this->password_protect_status = FALSE;
@@ -126,9 +133,8 @@ class WPPCP_Password_Protected_Content{
 
             $site_protect_password = isset($_POST['site_protect_password']) ? sanitize_text_field($_POST['site_protect_password']) : '';
 
-            if(trim($site_password) == trim($site_protect_password) ){
-                setcookie( 'wppcp_global_password_protected_status' , 'ACTIVE' , strtotime( '+1 year' ) , "/");
-                $site_password_status = 'ACTIVE';
+            if( hash_equals( trim($site_password), trim($site_protect_password) ) ){
+                setcookie( 'wppcp_global_password_protected_status' , $this->get_password_cookie_value($site_password) , strtotime( '+1 year' ) , "/" , "" , is_ssl() , true );
                 $this->password_protect_status = TRUE;
             }else{
                 $this->password_protect_error = __('Please enter valid password.','wppcp');
@@ -136,4 +142,74 @@ class WPPCP_Password_Protected_Content{
             }
         }
     }
+    /* Value stored in the "password entered" cookie for a given password. */
+    private function get_password_cookie_value($site_password){
+        return hash_hmac( 'sha256', 'wppcp_global_password|' . trim($site_password), wp_salt('auth') );
+    }
+
+    /* TRUE only when the request carries a cookie this site issued for the
+       password that is currently configured. */
+    private function is_password_cookie_valid($site_password){
+        if(trim($site_password) == '' || ! isset( $_COOKIE['wppcp_global_password_protected_status'] ) ){
+            return FALSE;
+        }
+
+        $cookie_value = sanitize_text_field( $_COOKIE['wppcp_global_password_protected_status'] );
+
+        return hash_equals( $this->get_password_cookie_value($site_password), $cookie_value );
+    }
+
+
+    /* TRUE when the request carries no password and the visitor is not logged in.
+       Feeds and REST never reach the template_include filter, so they need their own
+       gate. Logged in users are left alone so the editor keeps working. */
+    private function global_password_blocks_request(){
+        $private_content_settings = get_option('wppcp_options');
+
+        if(!isset($private_content_settings['general']['private_content_module_status'])){
+            return FALSE;
+        }
+
+        $password_settings = isset($private_content_settings['password_global']) ? $private_content_settings['password_global'] : array();
+        $global_password_protect = isset($password_settings['global_password_protect']) ? $password_settings['global_password_protect'] : 'disabled';
+        $site_password = isset($password_settings['global_protect_password']) ? $password_settings['global_protect_password'] : '';
+
+        if($global_password_protect == 'disabled' || trim($site_password) == ''){
+            return FALSE;
+        }
+
+        if(is_user_logged_in()){
+            return FALSE;
+        }
+
+        return ! $this->is_password_cookie_valid($site_password);
+    }
+
+    /* Feeds are generated after template_redirect but before template_include, so
+       without this the whole site stays readable over RSS while the gate is on. */
+    public function validate_feed_restrictions(){
+        if(is_feed() && $this->global_password_blocks_request()){
+            status_header(403);
+            nocache_headers();
+            exit;
+        }
+    }
+
+    /* REST requests never reach the template loader at all. */
+    public function validate_rest_restrictions($errors){
+        if(is_wp_error($errors)){
+            return $errors;
+        }
+
+        if($this->global_password_blocks_request()){
+            return new WP_Error(
+                'wppcp_global_password_required',
+                __('This content is password protected. Please enter the password to view the content.','wppcp'),
+                array('status' => 401)
+            );
+        }
+
+        return $errors;
+    }
+
 }
