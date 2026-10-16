@@ -150,7 +150,7 @@ class WPPCP_Post_Attachments{
 
     				$attachment_status = FALSE;
 	                foreach($post_attachments as $attach_data){
-	                    if($attach_data['attach_id'] != ''){
+	                    if( ! empty( $attach_data['attach_id'] ) ){
 	                    	
 
 	                    	if($this->verify_attachment_permission($attach_data)){
@@ -241,47 +241,63 @@ class WPPCP_Post_Attachments{
     }
 
     public function file_attachment_download(){
-    	if(isset($_GET['wppcp_file_download']) && sanitize_text_field($_GET['wppcp_file_download']) =='yes'){
-			$wppcp_file_download = sanitize_text_field($_GET['wppcp_file_download']);
-			$wppcp_file_id = isset($_GET['wppcp_file_id']) ? (int) sanitize_text_field($_GET['wppcp_file_id']) : '';
-			$wppcp_post_id = isset($_GET['wppcp_post_id']) ? (int) sanitize_text_field($_GET['wppcp_post_id']) : '';
+        if( ! isset($_GET['wppcp_file_download']) || sanitize_text_field($_GET['wppcp_file_download']) !== 'yes' ){
+            return;
+        }
 
-			if($wppcp_file_id != '' && $wppcp_post_id != ''){
-				$file_link = wp_get_attachment_url($wppcp_file_id);
+        // absint() collapses '', 'abc', '0' and negatives all to 0, so this is the
+        // only comparison that reliably rejects a missing/empty id on PHP 8.
+        $wppcp_file_id = isset($_GET['wppcp_file_id']) ? absint($_GET['wppcp_file_id']) : 0;
+        $wppcp_post_id = isset($_GET['wppcp_post_id']) ? absint($_GET['wppcp_post_id']) : 0;
 
-				$upload_dir = wp_upload_dir(); 
-				$file_dir =  str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_link);
+        if( $wppcp_file_id < 1 || $wppcp_post_id < 1 ){
+            return;
+        }
 
-				$post_attachments = get_post_meta( $wppcp_post_id, '_wppcp_post_attachments', true );
-				foreach ($post_attachments as $key => $attach_data) {
-					if($attach_data['attach_id'] == $wppcp_file_id){
+        $file_link = wp_get_attachment_url($wppcp_file_id);
+        if( ! $file_link ){
+            return; // attachment was deleted, or its _wp_attached_file meta is gone
+        }
 
-                        if ($this->verify_download_permission($attach_data)){
+        $upload_dir = wp_upload_dir();
+        $file_dir = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $file_link);
 
-    						$file_mime_type = isset($attach_data['mime']) ? $attach_data['mime'] : '';
-    						if($file_mime_type != ''){
+        // Guard the filesystem path before it reaches filesize()/readfile().
+        // $file_dir === $file_link means the URL was not under the uploads baseurl,
+        // so str_replace() was a no-op and we would be reading a URL, not a path.
+        if( $file_dir === '' || $file_dir === $file_link || ! is_file($file_dir) || ! is_readable($file_dir) ){
+            return;
+        }
 
-    							header('Cache-Control: public');
-    							header('Content-Description: File Transfer');
-    							header('Content-disposition: attachment;filename='.basename($file_dir));
+        $post_attachments = get_post_meta( $wppcp_post_id, '_wppcp_post_attachments', true );
+        if( ! is_array($post_attachments) ){
+            return;
+        }
 
-    						
-    							header('Content-Type: '. $file_mime_type);
-    							header('Content-Transfer-Encoding: binary');
-    							header('Content-Length: '. filesize($file_dir));
-    							readfile($file_dir);
-    							exit;
-    						}
-                        }else {
-                            echo sprintf(__('You need to <a href="%s">login</a> before downloading this file.','wppcp'),wp_login_url());
-                            exit();
-                        }
-						
-					}
-				}
-				
-			}			
-		}
+        foreach ($post_attachments as $attach_data) {
+            if( ! isset($attach_data['attach_id']) || (int) $attach_data['attach_id'] !== $wppcp_file_id ){
+                continue;
+            }
+
+            if( ! $this->verify_download_permission($attach_data) ){
+                echo sprintf(__('You need to <a href="%s">login</a> before downloading this file.','wppcp'),wp_login_url());
+                exit();
+            }
+
+            $file_mime_type = isset($attach_data['mime']) ? $attach_data['mime'] : '';
+            if( $file_mime_type === '' ){
+                continue;
+            }
+
+            header('Cache-Control: public');
+            header('Content-Description: File Transfer');
+            header('Content-disposition: attachment;filename="'.basename($file_dir).'"');
+            header('Content-Type: '. $file_mime_type);
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: '. filesize($file_dir));
+            readfile($file_dir);
+            exit;
+        }
     }
 }
 
