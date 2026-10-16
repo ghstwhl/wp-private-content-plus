@@ -534,19 +534,24 @@ class WPPCP_Private_Posts_Pages{
 
         if(!is_user_logged_in()){
             return FALSE;
-        }else{
-
-            $post   = get_post( $post_id );
-            $author_id = $post->post_author;
-
-            
-            if($this->current_user->ID == $author_id || current_user_can('manage_options')
-                ){
-                return TRUE;
-            }else{
-                return FALSE;
-            }
         }
+
+        $post = get_post( $post_id );
+        if(! $post ){
+            return FALSE;
+        }
+
+        // $this->current_user is an int in some call paths and a WP_User object
+        // in others, so normalise it the way protection_status() does; as written
+        // this compared against null and denied the post's own author.
+        $current_user_id = is_object($this->current_user) ? (int) $this->current_user->ID : (int) $this->current_user;
+
+        if($current_user_id === (int) $post->post_author
+            || current_user_can('manage_options') || current_user_can('wppcp_manage_options') ){
+            return TRUE;
+        }
+
+        return FALSE;
     }
 
     /* Mask every readable field of a restricted post in a listing. Rewriting
