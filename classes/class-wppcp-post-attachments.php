@@ -279,6 +279,16 @@ class WPPCP_Post_Attachments{
                 continue;
             }
 
+            // The post named in the URL must be one this visitor may view, and the
+            // attachment's own visibility still has to allow them.
+            if( ! $this->current_user_can_view_post($wppcp_post_id) ){
+                return;
+            }
+
+            if( ! $this->verify_attachment_permission($attach_data) ){
+                continue;
+            }
+
             if( ! $this->verify_download_permission($attach_data) ){
                 echo sprintf(__('You need to <a href="%s">login</a> before downloading this file.','wppcp'),wp_login_url());
                 exit();
@@ -299,5 +309,44 @@ class WPPCP_Post_Attachments{
             exit;
         }
     }
+    /* TRUE when the current visitor may view the post the download link was
+       rendered on. Without it, any post that merely lists the attachment id
+       acts as a ticket for the file. */
+    private function current_user_can_view_post($post_id){
+        global $wppcp;
+
+        if(current_user_can('manage_options') || current_user_can('wppcp_manage_options')){
+            return TRUE;
+        }
+
+        // Site lockdown covers the whole site, so it is checked first.
+        $private_content_settings = get_option('wppcp_options');
+        $lockdown_data = isset($private_content_settings['site_lockdown']) ? $private_content_settings['site_lockdown'] : array();
+        $lockdown_status = isset($lockdown_data['lockdown_status']) ? $lockdown_data['lockdown_status'] : 'disabled';
+
+        if($lockdown_status == 'enabled' && ! is_user_logged_in()){
+            $lockdown_allowed_posts = isset($lockdown_data['lockdown_allowed_posts']) ? (array) $lockdown_data['lockdown_allowed_posts'] : array();
+            if(! in_array($post_id, $lockdown_allowed_posts)){
+                return FALSE;
+            }
+        }
+
+        // The same per-post and global checks the plugin applies when deciding
+        // whether to redirect a visitor away from the post itself.
+        $protection = $wppcp->private_posts_pages;
+
+        $protection_status = $protection->protection_status($post_id);
+        if(! $protection_status){
+            return FALSE;
+        }
+
+        if(trim($protection_status) == 'none'){
+            return (bool) $protection->global_protection_status($post_id);
+        }
+
+
+        return TRUE;
+    }
+
 }
 
