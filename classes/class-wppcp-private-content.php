@@ -1022,6 +1022,14 @@ class WPPCP_Private_Content{
             return $this->get_restriction_message($atts,$content,$private_content_result);
         }        
 
+        // WooCommerce may not be active, and a logged out visitor has no user to
+        // check. Either way nobody can be shown to have bought the product, so the
+        // content stays hidden rather than the request dying on an undefined
+        // function.
+        if( ! function_exists('wc_customer_bought_product') || ! $user ){
+            return $message;
+        }
+
         if($product_id != '' && wc_customer_bought_product( $user->user_email, $user->ID, $product_id )){
             return do_shortcode($content);
         }else{
