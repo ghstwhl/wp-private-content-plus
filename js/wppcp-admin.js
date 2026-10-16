@@ -748,6 +748,19 @@ jQuery(document).ready(function($) {
   // Site Lockdown end 
 });
 
+/* Escape a value before it is concatenated into select2 markup. The select2
+   escapeMarkup overrides above return markup unchanged so that the formatters
+   below can build their ownHTML, which makes escaping the data their job. */
+function wppcp_escapeText (value) {
+    if (value === undefined || value === null) { return ''; }
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 function wppcp_formatRepo (repo) {
     if (repo.loading) return repo.text;
 
@@ -757,7 +770,7 @@ function wppcp_formatRepo (repo) {
     '</div>' +
     '<div clas="col-sm-10">' +
     '<div class="clearfix">' +
-    '<div class="col-sm-6">' + repo.name + '</div>' +
+    '<div class="col-sm-6">' + wppcp_escapeText(repo.name) + '</div>' +
     '</div>';
 
 
@@ -767,7 +780,7 @@ function wppcp_formatRepo (repo) {
 }
 
 function wppcp_formatRepoSelection (repo) {
-    return repo.name || repo.text;
+    return wppcp_escapeText(repo.name || repo.text);
 }
 
 function wppcp_renderMediaUploader( $ , attachment_id) {
