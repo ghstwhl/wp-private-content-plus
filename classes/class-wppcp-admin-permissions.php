@@ -2,6 +2,9 @@
 
 class WPPCP_Admin_Permissions{
 
+    public $wppcp_options;
+
+
 	public function __construct(){
 		add_action( 'init' , array( $this, 'init') );
 		add_action( 'wp_ajax_wppcp_load_admin_menu_permission', array( $this, 'load_admin_menu_permission') );

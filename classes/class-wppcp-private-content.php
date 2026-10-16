@@ -5,6 +5,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* Manage content restriction shortcodes */
 class WPPCP_Private_Content{
+
+    public $status;
+
     
     public $current_user;
     public $private_content_settings;

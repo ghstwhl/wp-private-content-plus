@@ -5,6 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* Manage settings of WP Private Content Plus plugin */
 class WPPCP_Settings{
+
+    public $plugin_settings_tabs;
+    public $settings;
+    public $wppcp_options;
+
     
     public $template_locations;
     public $current_user;

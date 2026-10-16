@@ -2,6 +2,9 @@
 
 class WPPCP_Admin_Stats{
 
+    public $private_content_settings;
+
+
 
 	public function __construct(){
 		add_action( 'wp_dashboard_setup', array($this,'register_my_dashboard_widget' ) );

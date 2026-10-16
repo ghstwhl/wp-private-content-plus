@@ -5,6 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* Manage content restriction shortcodes */
 class WPPCP_Password_Protected_Content{
+
+    public $password_protect_error;
+    public $password_protect_status;
+
     
     public $current_user;
     public $private_content_settings;

@@ -3,6 +3,9 @@
 /* Manage social locking related features */
 class WPPCP_Social_Locker{
 
+    public $private_content_settings;
+
+
 	/* Initialize menu related acttions and filters */
 	public function __construct(){
 		global $wppcp;

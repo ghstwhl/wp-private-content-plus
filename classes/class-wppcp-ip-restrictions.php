@@ -1,6 +1,9 @@
 <?php
 
 class WPPCP_IP_Restrictions{
+
+    public $current_user;
+
 	public function __construct(){
 
 		add_action('init', array($this, 'validate_ip_restrictions'), 1); 

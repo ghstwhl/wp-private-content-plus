@@ -1,6 +1,10 @@
 <?php
 class WPPCP_Site_Lockdown{
 
+    public $settings;
+    public $user_id;
+
+
 	public function __construct(){
 		add_action('wppcp_admin_menu_pages',array($this, 'admin_menu_pages'));
 
