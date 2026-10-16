@@ -230,6 +230,9 @@ class WPPCP_Private_Posts_Pages{
 
     public function protection_status($post_id){
         global $wppcp;
+         // $this->current_user is an int in some call paths and a WP_User object in
+         // others, so normalise it before the role and user branches use it.
+         $current_user_id = is_object($this->current_user) ? (int) $this->current_user->ID : (int) $this->current_user;
 
         $visibility = get_post_meta( $post_id, '_wppcp_post_page_visibility', true );
         $visible_roles = get_post_meta( $post_id, '_wppcp_post_page_roles', true );
@@ -268,7 +271,7 @@ class WPPCP_Private_Posts_Pages{
                     if(count($visible_roles) == 0){
                         return FALSE;
                     }else{
-                        $user_roles = $wppcp->roles_capability->get_user_roles_by_id($this->current_user);
+                        $user_roles = $wppcp->roles_capability->get_user_roles_by_id($current_user_id);
                         foreach ($visible_roles as  $visible_role ) {
                             if(in_array($visible_role, $user_roles)){
                                 return TRUE;
@@ -289,7 +292,7 @@ class WPPCP_Private_Posts_Pages{
                     }else{
                         
                         foreach ($allowed_users as  $allowed_user ) {
-                            if(in_array($this->current_user->ID, $allowed_users)){
+                            if(in_array($current_user_id, $allowed_users)){
                                 return TRUE;
                             }
                         }
