@@ -160,7 +160,12 @@ class WPPCP_Admin_Permissions{
 		$url = htmlspecialchars( $url );
 		$uri = parse_url( $url );
 
-		if ( $remove_slug === $url ) {
+		// A slug has two shapes in this codebase: "admin.php?page=X" carries the page
+		// in a query string, so its basename form never matches and that check never
+		// fired, while "edit.php?post_type=Y" matches the basename directly.
+		$page_slug = isset( $_GET[ 'page' ] ) ? sanitize_text_field( $_GET[ 'page' ] ) : '';
+
+		if ( $remove_slug === $url || ( $page_slug !== '' && $remove_slug === $page_slug ) ) {
 			add_action( 'load-' . basename( $uri[ 'path' ] ), array($this, 'block_page_access') );
 			return TRUE;
 		}
