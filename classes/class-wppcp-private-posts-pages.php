@@ -208,14 +208,14 @@ class WPPCP_Private_Posts_Pages{
                 foreach ($wp_query->posts as $key => $post_obj) {
                     $protection_status = $this->protection_status($post_obj->ID);
                     if(!$protection_status){
-                        $wp_query->posts[$key]->post_content = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+                        $this->mask_restricted_post( $wp_query->posts[$key] );
                     }else{
                         if(trim($protection_status) == 'none'){
 
                             if($this->global_protection_status($post_obj->ID)){
                                 
                             }else{                               
-                               $wp_query->posts[$key]->post_content = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+                               $this->mask_restricted_post( $wp_query->posts[$key] );
                                                   
                             }
                         }
@@ -520,7 +520,7 @@ class WPPCP_Private_Posts_Pages{
                 foreach ($wp_query->posts as $key => $post_obj) {
                     $protection_status = $this->protection_author_status($post_obj->ID);
                     if(!$protection_status){
-                        $wp_query->posts[$key]->post_content = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+                        $this->mask_restricted_post( $wp_query->posts[$key] );
                     }
                 }
             }
@@ -547,6 +547,16 @@ class WPPCP_Private_Posts_Pages{
                 return FALSE;
             }
         }
+    }
+
+    /* Mask every readable field of a restricted post in a listing. Rewriting
+       post_content alone left its title and excerpt on display. */
+    private function mask_restricted_post($post_obj){
+        $mask = apply_filters('wppcp_archive_page_restrict_message', __('You don\'t have permission to view the content','wppcp'), array());
+
+        $post_obj->post_title   = $mask;
+        $post_obj->post_excerpt = $mask;
+        $post_obj->post_content = $mask;
     }
 }
 
