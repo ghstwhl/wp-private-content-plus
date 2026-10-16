@@ -310,6 +310,13 @@ class WPPCP_Private_Posts_Pages{
     }
 
     public function global_protection_status($post_id){
+        return $this->global_type_protection_status( get_post_type($post_id) );
+    }
+
+    /* The same decision as global_protection_status(), keyed by post type, so a
+       caller that only knows the type - a search query, for instance - can ask
+       without having to invent a post id. */
+    public function global_type_protection_status($post_type){
         global $wppcp;
 
         $predefined_post_types = array('forum','topic','product');
@@ -317,7 +324,6 @@ class WPPCP_Private_Posts_Pages{
 
         $private_content_settings = get_option('wppcp_options');
 
-        $post_type = get_post_type($post_id);
         if($post_type != 'post' && $post_type != 'page' && !in_array($post_type, $predefined_post_types)){
             return TRUE;
         }
