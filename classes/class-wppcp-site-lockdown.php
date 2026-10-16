@@ -176,9 +176,9 @@ class WPPCP_Site_Lockdown{
             }
         }
 
-        $current_page_url = rtrim(wppcp_current_page_url(),"/");
+        $current_page_full_url = rtrim(wppcp_current_page_url(),"/");
 
-        $parsed_url = parse_url($current_page_url);
+        $parsed_url = parse_url($current_page_full_url);
         $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
         $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
         $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -188,18 +188,27 @@ class WPPCP_Site_Lockdown{
         $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
  
         $current_page_url = rtrim($scheme.$user.$pass.$host.$port.$path,"/");
-        if(in_array($current_page_url, $skipped_urls)){
+        // Never redirect the lock target to itself, or the request loops. This is an
+        // exact comparison, so the site root carrying a query string is not mistaken
+        // for the root itself and skipped.
+        if($current_page_full_url === $redirect_url_compare){
+            return;
+        }
+
+        // The full URL is compared first, then the query stripped form, so a
+        // whitelisted URL still matches when tracking parameters are appended.
+        if(in_array($current_page_full_url, $skipped_urls) || in_array($current_page_url, $skipped_urls)){
             return;
         }else{
 
             // Check for URL exceptions in admin area                
             if('wp-login' == $redirect_url){
-                $url = add_query_arg( 'redirect_to', $current_page_url, wp_login_url() );
+                $url = add_query_arg( 'redirect_to', $current_page_full_url, wp_login_url() );
                 wp_redirect(esc_url($url));
                 
             }else{
                 
-                $url = add_query_arg( 'redirect_to', $current_page_url, ($redirect_url) );
+                $url = add_query_arg( 'redirect_to', $current_page_full_url, ($redirect_url) );
                 wp_redirect(esc_url($url));
             }             
             exit;
