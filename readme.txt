@@ -4,7 +4,7 @@ Donate link: https://www.wpexpertdeveloper.com/donations/
 Tags: private page,restrict content,client portal,private content,membership,private user page, private portal, post page restriction,shortcode,private,protect,nav menu, restrict menu, content restrictions, lock content, scheduled content, private schedule, admin menu, admin screens, time based content, capability, search, search restrictions, navigation, user role, user profiles made easy, password protect,private group, password protection,widget by user role, protect widgets,restrict widgets, restrict widget,hide, post attachments, restrict attachments, protect attachments, attachment download,private site, post file, attachments, widgets, global post restriction, content lock, private site,site lockdown, lock entire site, protect rss feed,restrict rss feed, user groups, groups
 Requires at least: 4.3.1
 Tested up to: 6.7.1
-Stable tag: 3.6.2
+Stable tag: 3.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,13 @@ Please refer the [Documentation](https://www.wpexpertdeveloper.com/wp-private-co
 
 
 == Changelog ==
+
+= 3.6.3 =
+* Security: fixes access control defects affecting password protection, file
+  attachments, the REST API, site lockdown, IP restrictions, private pages and
+  search restrictions
+* Fixes PHP 8 fatal errors and deprecation warnings
+* Fixes smaller bugs in search, widgets, user groups and admin menu restrictions
 
 = 3.6.2 =
 * Fix bug related to searching restricted posts
