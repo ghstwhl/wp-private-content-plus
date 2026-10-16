@@ -130,35 +130,41 @@ class WPPCP_Site_Lockdown{
             return;
         }
 
-        if(is_feed()){
-            return;
-        }
-
         if (is_user_logged_in ()) {
             return;
         }else{
             $this->user_id = 0;
         }
 
+        // A locked down site must not keep publishing its whole content over RSS.
+        // This runs before the skip list, so the query string form /?feed=rss2 cannot
+        // be matched by the site root entry and slip through.
+        if(is_feed()){
+            status_header(403);
+            nocache_headers();
+            exit;
+        }
+
         $redirect_url = isset($lockdown_settings['redirect_url']) ? $lockdown_settings['redirect_url'] : '';
         if(trim($redirect_url) == ''){
             $redirect_url = site_url();
         }
+        $redirect_url_compare = rtrim($redirect_url, "/");
 
         // Add globally skipped URL's, pages and posts
-        $skipped_urls = array( strtok(rtrim($redirect_url,"/"), '?') , strtok(rtrim(wp_login_url(),"/"),'?'), strtok(rtrim(wp_registration_url(),"/"),'?') , strtok(rtrim(wp_lostpassword_url(),"/"),'?') );
+        $skipped_urls = array( strtok(rtrim(wp_login_url(),"/"),'?'), strtok(rtrim(wp_registration_url(),"/"),'?') , strtok(rtrim(wp_lostpassword_url(),"/"),'?') );
         $skipped_pages = isset($lockdown_settings['lockdown_allowed_pages']) ? (array) $lockdown_settings['lockdown_allowed_pages'] : array();
         
         foreach ($skipped_pages as $page_id) {
            if($page_id != '0' && $page_id != ''){
-                array_push($skipped_urls, strtok(rtrim(get_permalink( $page_id ),"/"),'?') );
+                array_push($skipped_urls, rtrim(get_permalink( $page_id ),"/") ); // keep any query: on plain permalinks ?p=N IS the identity
            }
         }
 
         $skipped_posts = isset($lockdown_settings['lockdown_allowed_posts']) ? (array) $lockdown_settings['lockdown_allowed_posts'] : array() ;
         foreach ($skipped_posts as $page_id) {
            if($page_id != '0' && $page_id != ''){
-                array_push($skipped_urls, strtok(rtrim(get_permalink( $page_id ),"/"),'?') );
+                array_push($skipped_urls, rtrim(get_permalink( $page_id ),"/") ); // keep any query: on plain permalinks ?p=N IS the identity
            }
         }
 
