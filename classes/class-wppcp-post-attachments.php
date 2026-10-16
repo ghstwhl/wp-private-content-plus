@@ -315,7 +315,7 @@ class WPPCP_Post_Attachments{
                 continue;
             }
 
-            header('Cache-Control: public');
+            header('Cache-Control: private, no-store, max-age=0');   // gated file: no shared cache may replay it
             header('Content-Description: File Transfer');
             header('Content-disposition: attachment;filename="'.basename($real_file).'"');
             header('Content-Type: '. $file_mime_type);
