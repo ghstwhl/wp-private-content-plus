@@ -351,6 +351,13 @@ class WPPCP_Post_Attachments{
         // whether to redirect a visitor away from the post itself.
         $protection = $wppcp->private_posts_pages;
 
+        // Author restrictions are gated on the front end by
+        // validate_post_author_restrictions(), so the download has to agree.
+        if( get_post_meta( $post_id, '_wppcp_post_page_author_visibility', true ) == 'yes'
+            && ! $protection->protection_author_status($post_id) ){
+            return FALSE;
+        }
+
         $protection_status = $protection->protection_status($post_id);
         if(! $protection_status){
             return FALSE;
