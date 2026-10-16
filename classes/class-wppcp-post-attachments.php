@@ -76,6 +76,12 @@ class WPPCP_Post_Attachments{
             return;
         }
 
+        // The display side skips these post types, so there is nothing to save for
+        // them. This list was declared and then never used.
+        if ( in_array( get_post_type( $post_id ), $skipped_types ) ) {
+            return;
+        }
+
         $wppcp_post_files_list_title = isset($_POST['wppcp_post_files_list_title']) ? sanitize_text_field($_POST['wppcp_post_files_list_title']) : '';
 		$wppcp_post_files_list_description = isset($_POST['wppcp_post_files_list_description']) ? sanitize_textarea_field($_POST['wppcp_post_files_list_description']) : '';
 		update_post_meta( $post_id, '_wppcp_post_files_list_title', $wppcp_post_files_list_title );
@@ -87,10 +93,23 @@ class WPPCP_Post_Attachments{
 
 		if(is_array($wppcp_attachments)){
 			foreach ($wppcp_attachments as $key => $wppcp_attachment) {
+                $attach_id = (int) $key;
+
+                // Only ids that really are attachments, and that this user is
+                // allowed to read, get listed. Without this any id at all could be
+                // named here and then fetched through the download endpoint.
+                if ( ! $attach_id || get_post_type( $attach_id ) !== 'attachment' || ! current_user_can( 'read_post', $attach_id ) ) {
+                    continue;
+                }
+
+                if ( ! is_array( $wppcp_attachment ) ) {
+                    continue;
+                }
+
                 foreach ($wppcp_attachment as $wppcp_attachment_key => $value) {
                     $wppcp_attachment[$wppcp_attachment_key] = sanitize_text_field($value);
                 }
-				$wppcp_attachment['attach_id'] = (int) $key;
+				$wppcp_attachment['attach_id'] = $attach_id;
 				array_push($wppcp_post_attachments,$wppcp_attachment);
 			}
 
