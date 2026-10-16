@@ -157,22 +157,39 @@ function wppcp_display_info_buttons($url,$type){
 
 
 function wppcp_get_client_ip() {
-    $ipaddress = '';
-    if (getenv('HTTP_CLIENT_IP'))
-        $ipaddress = getenv('HTTP_CLIENT_IP');
-    else if(getenv('HTTP_X_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-    else if(getenv('HTTP_X_FORWARDED'))
-        $ipaddress = getenv('HTTP_X_FORWARDED');
-    else if(getenv('HTTP_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_FORWARDED_FOR');
-    else if(getenv('HTTP_FORWARDED'))
-       $ipaddress = getenv('HTTP_FORWARDED');
-    else if(getenv('REMOTE_ADDR'))
-        $ipaddress = getenv('REMOTE_ADDR');
-    else
-        $ipaddress = 'UNKNOWN';
-    return $ipaddress;
+    $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
+    // Forwarding headers are chosen by the client, so they are only believed
+    // when the request actually arrived from a proxy the site trusts. Without
+    // that, REMOTE_ADDR is the one address a visitor cannot pick for itself.
+    $trusted_proxies = apply_filters('wppcp_trusted_proxies', array());
+
+    if(!is_array($trusted_proxies) || !in_array($remote_addr, $trusted_proxies)){
+        return $remote_addr;
+    }
+
+    // Walk the chain right to left: anything a client appends to
+    // X-Forwarded-For lands to the left of the address the proxy recorded.
+    $forwarded = array();
+    foreach(array('HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED') as $header){
+        if(empty($_SERVER[$header])){
+            continue;
+        }
+        foreach(explode(',', $_SERVER[$header]) as $candidate){
+            $candidate = trim($candidate);
+            if(filter_var($candidate, FILTER_VALIDATE_IP)){
+                $forwarded[] = $candidate;
+            }
+        }
+    }
+
+    for($i = count($forwarded) - 1; $i >= 0; $i--){
+        if(!in_array($forwarded[$i], $trusted_proxies)){
+            return $forwarded[$i];
+        }
+    }
+
+    return $remote_addr;
 }
 
 function wppcp_admin_templates_allowed_html(){
