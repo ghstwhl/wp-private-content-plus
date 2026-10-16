@@ -253,6 +253,13 @@ function wppcp_rest_restriction_error($post){
         return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
     }
 
+    // Author restrictions are gated on the front end by
+    // validate_post_author_restrictions(), so REST has to agree.
+    if( get_post_meta( $post->ID, '_wppcp_post_page_author_visibility', true ) == 'yes'
+        && ! $wppcp->private_posts_pages->protection_author_status( $post->ID ) ){
+        return new WP_Error('rest_forbidden', esc_html__('You are not authorized to view this post.', 'wppcp'), array('status' => 403));
+    }
+
     return NULL;
 }
 
