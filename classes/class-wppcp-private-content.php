@@ -1049,7 +1049,16 @@ class WPPCP_Private_Content{
 
         ), $atts));
         
-        $user_id =  ($user_id == '') ? get_current_user_id() : $user_id;
+        $user_id =  ($user_id == '') ? get_current_user_id() : absint($user_id);
+
+        // This lists posts restricted to a user, so it belongs to that user alone,
+        // or to someone who manages restrictions. Without this any author could
+        // publish the shortcode with another user's id and make the list of posts
+        // hidden from everyone else readable.
+        if( ! is_user_logged_in() || ( $user_id !== get_current_user_id()
+            && ! current_user_can('manage_options') && ! current_user_can('wppcp_manage_options') ) ){
+            return '';
+        }
         
         $query = new WP_Query( array( 
             'post_type' => sanitize_text_field($post_type),
@@ -1089,7 +1098,20 @@ class WPPCP_Private_Content{
 
         ), $atts));
         
-        $role =  ($role == '') ? '' : $role;
+        $role =  ($role == '') ? '' : sanitize_text_field($role);
+
+        // A visitor may list what is restricted to a role they hold themselves;
+        // another role's restrictions are not theirs to enumerate.
+        if( ! is_user_logged_in() ){
+            return '';
+        }
+
+        if( ! current_user_can('manage_options') && ! current_user_can('wppcp_manage_options') ){
+            $current_roles = $wppcp->roles_capability->get_user_roles_by_id( get_current_user_id() );
+            if( ! in_array( $role, (array) $current_roles ) ){
+                return '';
+            }
+        }
         
         $query = new WP_Query( array( 
             'post_type' => sanitize_text_field($post_type),
